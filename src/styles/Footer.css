@@ -1,0 +1,34 @@
+/* Style for the footer container */
+footer {
+    background-color: var(--color1);
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+  }
+  
+  /* Style for the footer links */
+  .footer-links {
+    margin-bottom: 10px;
+  }
+  
+  .footer-links a {
+    text-decoration: none;
+    color: #fff;
+    margin: 0 10px;
+  }
+  
+  /* Style for the contact information */
+  .contact-info {
+    margin: 10px 0;
+  }
+  
+  .contact-info p {
+    margin: 5px 0;
+  }
+  
+  /* Style for the copyright text */
+  .copyright {
+    font-size: 12px;
+    margin-top: 10px;
+  }
+  

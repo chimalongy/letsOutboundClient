@@ -1,0 +1,46 @@
+.list-container{
+    display: flex;
+    display: flex;
+    justify-content: space-between;
+
+}
+.list-container>div{
+    width: 40%;
+}
+
+.removeselectedemail{
+    color: brown;
+}
+.selectedEmailItem{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    border: 1px solid var(--thinLine);
+    border-radius: 15px;
+}
+
+.select-email-container>ul{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap:2px;
+}
+
+.new-outbound-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.add-outtbound-button{
+    padding: 20px;
+    background-color: var(--color2);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    width: 100%;
+}
+
+#frmOutboundDetails>div, #frmOutboundDetails>div>div{
+    display: flex;
+    flex-direction: column;
+}

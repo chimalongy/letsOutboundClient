@@ -1,0 +1,33 @@
+.dash-board-container{
+    width:100%;
+    display:flex;
+    justify-content: space-between;
+    
+}
+
+.dashboard-sidebar{
+    width: 20%;
+    padding:10px;
+    background-color: var(--color1);
+    color: white;
+}
+
+.dashboard-content-container{
+    width: 80%;
+}
+
+
+@media screen and (max-width:750px) {
+    .dash-board-container{
+        flex-direction: column;  
+    }
+    .dashboard-sidebar{
+        width:100%;
+       
+    }
+
+    .dashboard-content-container{
+        width: 100%;
+    }
+
+}

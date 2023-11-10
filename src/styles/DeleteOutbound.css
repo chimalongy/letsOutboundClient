@@ -1,0 +1,26 @@
+.delete-outbound>h4{
+   font-size: 18px;
+   padding-bottom: 10px;
+}
+.delete-outbound>p{
+  
+   padding-bottom: 10px;
+}
+
+.button-controls{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+.button-controls>div{
+    width:50%;
+    
+}
+.button-controls>div>button{
+    padding: 20px;
+    background-color: var(--color2);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    width: 100%;
+}

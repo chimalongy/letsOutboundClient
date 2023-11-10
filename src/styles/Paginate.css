@@ -1,0 +1,21 @@
+.paginate{
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.paginate>ul{
+    font-size: 14px;
+    display: flex;
+}
+.paginate>ul>li{
+   padding: 10px;
+   width:40px;
+   height: 40px;
+   border:1px solid var(--thinLine);
+   border-radius:50%;
+   display:flex;
+   justify-content: center;
+   align-items: center;
+} 

@@ -1,0 +1,125 @@
+.tab-content-container {
+    width: 100%;
+}
+
+
+.tab-content-container-header>h1 {
+    font-size: 28px;
+    padding: 30px;
+
+}
+
+.tab-content-container-contents {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+}
+
+.email-display-options {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.email-display-options>div {
+    width: calc(100% /4.5);
+
+    padding: 20px;
+    border: 1px solid var(--thinLine);
+    border-radius: 20px;
+}
+
+.email-display-options>div>h3 {
+    border-bottom: 1px solid var(--thinLine)
+}
+
+.email-display-options>div>div {
+    padding-top: 10px;
+    border-bottom: 1px solid var(--thinLine)
+}
+
+.add-Email {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.add-Email:hover {
+    background-color: var(--thinLine);
+}
+
+.add-Email:active {
+    background-color: var(--color3);
+    color: white;
+}
+
+.email-content {
+    display: flex;
+    justify-content: space-between;
+    box-shadow: var(--boxShadow);
+    margin-top: 10px;
+}
+
+.email-content>.left {
+    width: 80%;
+}
+
+.email-content>.left>.top {
+    width: 80%;
+    padding: 10px;
+}
+
+.email-content>.left>.buttom {
+    width: 80%;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.email-content>.left>.buttom>p,
+.email-content>.left>.buttom>p>* {
+    font-size: 15px;
+}
+
+.email-content>.right {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.battery {
+    color: rgb(101, 150, 27)
+}
+
+@media screen and (max-width:750px) {
+
+    .email-display-options {
+        justify-content: center;
+        width: 100%;
+       
+        padding: 0;
+        gap: 20px;
+        flex-direction: column;
+        align-items: center;
+        align-content: normal;
+
+    }
+
+    .email-display-options>.add-Email {
+        width: 100%;
+        display: block;
+        padding: 20px;
+    }
+
+    .email-display-options> .email-data {
+        width: 100%;
+        display: block;
+        padding: 20px;
+    }
+}

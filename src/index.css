@@ -1,13 +1,167 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-size: 18px;
+  font-family: "Quicksand";
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+#root {
+  --color1: #00112C;
+  --color2: #0C3159;
+  --color3: #3BF7D1;
+  --color4: #F2F3F4;
+  --thinLine: #E2E5EA;
+  --boxShadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+.error {
+  font-size: 12px;
+  color: rgb(209, 9, 9);
+  font-weight: bold;
+}
+
+
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+textarea {
+  width: 100%;
+  font-size: 18px;
+  padding: 10px;
+  outline: none;
+  border-radius: 8px;
+  border: 1px solid var(--thinLine);
+
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+form>div {
+  display: flex;
+  flex-direction: column;
+}
+
+form button {
+  padding: 20px;
+  background-color: var(--color2);
+  color: white;
+  border: none;
+  border-radius: 50px;
+}
+
+.form-holder {
+  padding: 30px;
+  background-color: white;
+  width: 500px;
+  border-radius: 20px;
+}
+
+.form-holder>h2{
+  font-size: 28px;
+  margin-bottom: 2rem;
+}
+
+ul{
+  list-style-type: none; 
+}
+select{
+  padding: 15px;
+  width: 100%;
+  border: 1px solid var(--thinLine);
+  border-radius: 15px;
+}
+
+.itemList{
+  padding: 10px;
+}
+.itemList>ul{
+ padding: 0;
+}
+.itemList>ul{
+ padding: 0;
+}
+.itemList>ul>li{
+ padding: 15px;
+ border: 1px solid var(--thinLine);
+ border-radius: 10px;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+}
+.itemList>ul>li>p{
+  width: 60%; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+}
+.itemList>ul>li>div{
+ display: flex;
+ justify-content: space-evenly;
+
+ width: 40%; 
+
+}
+.item-icon{
+  font-size: 18px;
+}
+
+.add{
+  color: green;
+}
+.add:hover{
+  color: greenyellow;
+}
+.delete{
+ color: darkred;
+}
+.delete:hover{
+ color: red;
+}
+
+.list{
+  color:var(--color2);
+}
+.list:hover{
+  color:var(--color3);
+}
+
+
+.valid-date {
+  color: black; 
+}
+
+.invalid-date {
+  color: grey;
+}
+
+.site-button{
+  padding: 20px;
+  background-color: var(--color2);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  width:200px
+}
+
+
+@media screen and (max-width:750px) {
+  .form-holder {
+    width: 95%;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
 }

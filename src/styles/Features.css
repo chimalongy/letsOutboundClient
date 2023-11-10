@@ -1,0 +1,60 @@
+.features {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    
+} 
+
+.features>.wordings {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.features>.wordings>h3 {
+    font-size: 25px;
+    color: var(--color2);
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.features>.wordings>p {
+    font-size: 20px;
+
+}
+
+.features>.image {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.features>.image>img {
+    width: 50%;
+    height: 200px;
+}
+
+
+
+@media screen and (max-width:750px) {
+    .features {
+       flex-direction: column-reverse;
+    } 
+    .features>.wordings {
+        width: 100%;
+    }
+    .features>.image {
+        width: 100%;
+    }
+
+    .features>.image>img {
+        width: 150px;
+        height: 100px;
+    }
+}

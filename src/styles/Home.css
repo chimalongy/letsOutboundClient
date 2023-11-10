@@ -1,0 +1,189 @@
+.dummy {
+    padding: 40px;
+    background-color: var(--color1);
+}
+.section-dark{
+    background-color: var(--color1);
+    padding:4rem 0;
+}
+.section-light{
+    background-color: var(--color4);
+    padding:4rem 0;
+}
+
+.section-container {
+    width: 85%;
+    margin: auto;
+
+    
+
+}
+
+.section1 {
+    display: flex;
+    justify-content: space-between;
+   
+}
+
+.section1-left {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+
+}
+
+.section1-left>h1 {
+    font-size: 50px;
+    font-weight: 800;
+    color:white;
+
+}
+
+
+
+.section1-left>p {
+    font-size: 22px;
+    color: var(--color3);
+}
+
+.section1-right {
+    width: 40%;
+    padding-top: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.section1-right>img {
+    width: 100%;
+    margin: 0 auto;
+
+
+}
+
+.section-header {
+    display: block;
+    width: 100%;
+    font-size: 40px;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.feautures-container {
+    width: 90%;
+    margin: auto;
+}
+
+
+
+.HIW-cards {
+    display: flex;
+    justify-content: space-around;
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.HIW-cards>div {
+    width: calc(100% / 4);
+    gap: 15px;
+}
+
+
+ /* Style the details container */
+ details {
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    color: var(--backgroundColor2);
+   
+   
+    margin-bottom: 10px;
+   
+  }
+
+   /* Style the summary element */
+   summary {
+  
+    
+    padding: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    border:2px solid var(--color2);
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+  }
+
+  /* Style the summary when it's open
+  summary::-webkit-details-marker {
+    display: none;
+  } */
+  summary::marker {
+    float: right;
+  }
+
+   /* Style the content within the details element */
+   details p {
+    margin: 0;
+    padding: 15px;
+    font-size: 20px;
+    background-color: transparent;
+    color: var(--fontColor2);
+    border:1px solid var(--color3);
+    border-radius: 15px;
+    border-top: none;
+    border-top-left-radius: none;
+    border-top-right-radius: none;
+
+  }
+
+  @media screen and (max-width:750px) {
+    .section-dark,.section-light{
+        padding:2rem;
+    }
+    .section1 {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .section1-left,.section1-right{
+        width: 100%;
+        display: block;
+    }
+    .section1-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+    }
+
+
+    .section1-left>h1 {
+        font-size: 30px;
+    }
+    .section1-left>p {
+        font-size: 16px;
+        }
+    .section1-left>button{
+        margin: auto;
+        }
+        
+        .feautures-container{
+            display: flex;
+            flex-direction: column;
+            gap:1rem;
+            width: 100%;
+        }
+
+        .HIW-cards {
+           flex-direction: column;
+           gap:3rem;
+        }
+        .HIW-cards>div {
+           width:100%
+        }
+
+  }

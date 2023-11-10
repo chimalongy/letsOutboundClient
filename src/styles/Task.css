@@ -1,0 +1,12 @@
+.task{
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+}
+
+.date-select{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+}
