@@ -20,6 +20,6 @@ function FeaturesRight(props) {
       </div>
     </div>
   )
-}
+} 
 
 export default FeaturesRight

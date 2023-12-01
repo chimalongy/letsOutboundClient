@@ -1,0 +1,23 @@
+.outbound-details{
+     background-color: var(--color2);
+     border-radius: 10px;
+     width: 100%;
+     color:var(--thinLine)
+}
+.outbound-email-details{
+    display:flex;
+    justify-content: space-between;
+    padding:10px;
+    
+   
+}
+
+.outbound-allocated-email{
+    width:60%;
+    padding: 2px;
+}
+.outbound-allocated-email-capacity{ 
+    width: 40%;
+    padding: 2px;
+    text-align: right;
+}

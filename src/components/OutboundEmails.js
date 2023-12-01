@@ -4,7 +4,7 @@ import Modal from './Modal'
 import AddNewEmail from './AddNewEmail';
 import dataFetch from '../modules/dataFetch';
 import { useDispatch, useSelector } from 'react-redux';
-import Paginate from './Paginate'; 
+import Paginate from './Paginate';
 import DeleteOutbound from './DeleteOutbound';
 import EditEmail from './EditEmail';
 
@@ -17,7 +17,7 @@ function OutboundEmails(props) {
 
   let TotalCapacity = 0;
   uEmails.forEach(email => {
-    if (email.primaryEmail==true){
+    if (email.primaryEmail == true) {
       TotalCapacity += email.dailySendingCapacity
     }
   });
@@ -35,20 +35,23 @@ function OutboundEmails(props) {
       <div className='itemList'>
         <ul>
           {
-            props.data.map((email, index) => (
+            currentlist.map((email, index) => (
               <li key={index}>
-                
-               
-                {email.primaryEmail==false?(<i class="fa-solid fa-share-from-square" title={`sending from: ${email.parentEmail}`}></i>):(<></>)}
-                <p>{email.emailAddress}</p>
-                
-             
-                <div>
+
+                <div className='item-value'>
+                  {/* {email.primaryEmail==false?(<i class="fa-solid fa-share-from-square" title={`sending from: ${email.parentEmail}`}></i>):(<></>)} */}
+                  <p>{email.emailAddress} </p>
+                  {email.primaryEmail == false ? (<div className='parent-detail'>{` ${email.parentEmail}`}</div>) : (<></>)}
+
+                </div>
+
+
+                <div className='item-controls'>
                   <i class="fa-regular fa-pen-to-square" onClick={() => {
                     setModalChildren(<EditEmail data={email} openModal={setShowModal} value="emails" />)
                     setShowModal(true);
                   }} ></i>
-                  <i class="fa-solid fa-battery-full add"></i> {email.dailySendingCapacity}
+                  <p><i class="fa-solid fa-battery-full add"></i> {email.dailySendingCapacity}</p>
                   <i class="fa-solid fa-trash delete" onClick={() => {
                     setModalChildren(<DeleteOutbound data={email} openModal={setShowModal} value="emails" />)
                     setShowModal(true);
@@ -75,9 +78,9 @@ function OutboundEmails(props) {
 
   return (
     <div className='tab-content-container'>
-      <div className='tab-content-container-header'>
+      {/* <div className='tab-content-container-header'>
         <h1>Emails</h1>
-      </div>
+      </div> */}
 
       <div className='tab-content-container-contents'>
         <div className='email-display-options'>

@@ -1,18 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "../styles/DeleteOutbound.css"
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserOutbounds } from '../modules/redux/userOutboundsSlice';
 import { setUserTasks } from '../modules/redux/userTasksSlice';
 import { setUserEmails } from '../modules/redux/userEmailsSlice';
 import dataFetch from '../modules/dataFetch';
+import useDataUpdater from '../modules/useDataUpdater';
 
 function DeleteOutbound(props) {
-    const port="http://localhost:4000"
+    const port = ""
+    const { refreshUserOutbounds } = useDataUpdater()
+    const { refreshUserEmails } = useDataUpdater()
+    const { refreshUserTasks } = useDataUpdater()
     const user = useSelector((state) => state.user.userData);
-    
+    const [loading, setLoading] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
+    const [successMessage, setSuccessMessage] = useState('')
+
     const dispatch = useDispatch();
     return (
         <div className='form-holder delete-outbound'>
+            {errorMessage && <div className='form-error-container'><p className='error'><i class="fa-solid fa-circle-exclamation"></i> {errorMessage}</p></div>}
+
             {
                 props.value === "outbound" ? (
                     <>
@@ -35,103 +44,140 @@ function DeleteOutbound(props) {
                 <div><button onClick={() => { props.openModal(false) }}>Cancel</button></div>
                 <div>
                     <button onClick={async () => {
-                        
-                        if (props.value==="outbound"){
-                            const outboundName = props.data.outboundName
-                        let requestData = {
-                            ownerAccount: user.email,
-                            outboundName: outboundName
-                        }
 
-                        const url =  port +'/deleteOutbound'
-
-                        await dataFetch(url, requestData)
-                            .then((result) => {
-                                
-                                if (result.message === "outbond-deleted") {
-                                    //Get Outbonds
-                                   
-                                    const newrequestData = {
-                                        ownerAccount: user.email
-                                    }
-
-
-                                    let url = port+'/getuseroutbounds'
-                                    dataFetch(url, newrequestData)
-                                        .then((result) => {
-                                            const userOutbounds = result.data;
-                                            if (result.message === "outbounds-found") {
-
-                                                //Getting user Tasks
-                                                const newrequestData = {
-                                                    ownerAccount: user.email
-                                                }
-                                                let url = port+'/getusertasks'
-                                                dataFetch(url, newrequestData)
-                                                    .then((result) => {
-                                                        const userTasks = result.data
-                                                        dispatch(setUserOutbounds({
-                                                            outbounds: userOutbounds
-                                                        }))
-
-                                                        dispatch(setUserTasks({
-                                                            task: userTasks
-                                                        }))
-
-                                                        props.openModal(false)
-                                                    })
-                                                    .catch((err) => { console.log(err) })
-
-                                            }
-
-                                        })
-                                        .catch((err) => { console.log(err) })
-
-
+                        if (!loading) {
+                            if (props.value === "outbound") {
+                                setLoading(true)
+                                const outboundName = props.data.outboundName
+                                let requestData = {
+                                    ownerAccount: user.email,
+                                    outboundName: outboundName
                                 }
 
+                                const url = port + '/deleteOutbound'
 
-                            })
-                            .catch((err) => { console.log(err) })
+                                await dataFetch(url, requestData)
+                                    .then((result) => {
 
-                        }
-                        else{
-                            let requestData = {
-                                ownerAccount: user.email,
-                                emailAddress: props.data.emailAddress
-                            }
-                            const url = port+'/deleteEmail'
+                                        if (result.message === "outbond-deleted") {
+                                            //Get Outbonds
+                                            refreshUserOutbounds({ ownerAccount: user.email })
+                                            refreshUserTasks({ ownerAccount: user.email })
+                                            refreshUserEmails({ ownerAccount: user.email })
+                                            setSuccessMessage("Outbound deleted")
+                                            setLoading(false)
 
-                            await dataFetch(url, requestData)
-                                .then((result) => {
-                                    
-                                    if (result.message === "email-deleted") {
-                                        //Get user Emails
-                                        const requestData = {
-                                            ownerAccount: user.email
+                                            props.openModal(false)
+
+
+                                            // const newrequestData = {
+                                            //     ownerAccount: user.email
+                                            // }
+
+
+                                            // let url = port + '/getuseroutbounds'
+                                            // dataFetch(url, newrequestData)
+                                            //     .then((result) => {
+                                            //         const userOutbounds = result.data;
+                                            //         if (result.message === "outbounds-found") {
+
+                                            //             //Getting user Tasks
+                                            //             const newrequestData = {
+                                            //                 ownerAccount: user.email
+                                            //             }
+                                            //             let url = port + '/getusertasks'
+                                            //             dataFetch(url, newrequestData)
+                                            //                 .then((result) => {
+                                            //                     const userTasks = result.data
+                                            //                     dispatch(setUserOutbounds({
+                                            //                         outbounds: userOutbounds
+                                            //                     }))
+
+                                            //                     dispatch(setUserTasks({
+                                            //                         task: userTasks
+                                            //                     }))
+
+
+                                            //                 })
+                                            //                 .catch((err) => { console.log(err) })
+
+                                            //         }
+
+                                            //  })
+                                            // .catch((err) => { console.log(err) })
+
+
                                         }
-                                        let url = port+'/getuseroutboundemails'
-                                        dataFetch(url, requestData)
-                                            .then((result) => {
-                                                const userEmails = result.data;
-                                                if (result.message === "emails-found") {
-                                                    dispatch(setUserEmails({
-                                                        emails: userEmails
-                                                    }))
+                                        else {
+                                            setLoading(false)
+                                            setErrorMessage("An error occured.")
+                                        }
 
-                                                    props.openModal(false)
-                                                }
-                                            })
-                                    }
-                                    else{
-                                        alert(result)
-                                    }
-                                })
+
+                                    })
+                                    .catch((err) => {
+                                        setLoading(false)
+                                        setErrorMessage(err)
+
+                                    })
+
+                            }
+                            else {
+                                setLoading(true)
+                                let requestData = {
+                                    ownerAccount: user.email,
+                                    email: props.data
+                                }
+                                const url = port + '/deleteEmail'
+
+                                await dataFetch(url, requestData)
+                                    .then((result) => {
+
+                                        if (result.message === "email-deleted") {
+                                            refreshUserOutbounds({ ownerAccount: user.email })
+                                            refreshUserTasks({ ownerAccount: user.email })
+                                            refreshUserEmails({ ownerAccount: user.email })
+                                            setSuccessMessage("Email deleted")
+                                            setLoading(false)
+
+                                            props.openModal(false)
+
+
+
+
+                                            //Get user Emails
+                                            // const requestData = {
+                                            //     ownerAccount: user.email
+                                            // }
+                                            // let url = port + '/getuseroutboundemails'
+                                            // dataFetch(url, requestData)
+                                            //     .then((result) => {
+                                            //         const userEmails = result.data;
+                                            //         if (result.message === "emails-found") {
+                                            //             dispatch(setUserEmails({
+                                            //                 emails: userEmails
+                                            //             }))
+
+                                            //             props.openModal(false)
+                                            //         }
+                                            //     })
+                                        }
+                                        else {
+                                            setLoading(false)
+                                            setErrorMessage("An error occured.")
+                                        }
+                                    })
+                                    .catch((err) => {
+                                        setLoading(false)
+                                        setErrorMessage(err)
+
+                                    })
+                            }
+
                         }
 
 
-
-                    }}> Proceed</button>
+                    }}> {loading ? <i className="fa-solid fa-spinner fa-spin spinner"></i> : <p>Proceed</p>}</button>
                 </div>
             </div>
         </div >

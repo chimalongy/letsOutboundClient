@@ -66,7 +66,7 @@
 .other-nav-menu {
     display: flex;
     gap: 10px;
-    font-size: 20px;
+    font-size: 25px;
     justify-content: center;
     align-items: center;
 }
@@ -74,7 +74,6 @@
 
 .menu-icon {
     display: none;
-    font-size: 20px;
     cursor: pointer;
     color: white;
 
@@ -83,6 +82,14 @@
 /* Mobile Styles */
 @media screen and (max-width: 768px) {
 
+    .nav-container {
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+
+    }
 
     .nav-container>ul>li>a {
         color: white;
@@ -103,16 +110,19 @@
     .nav-links-mobile {
         display: flex;
         flex-direction: column;
-        position: absolute;
+        position: fixed;
         gap: 1.3rem;
-        top: 82px;
+        bottom: 0;
+        top: 110px;
         left: 0;
         width: 100%;
-        z-index: 1;
+        height: 100%;
         padding: 30px;
         color: white;
+        font-size: 30px;
         background: var(--color1);
-        z-index: 999999999999999;
+        z-index: 1000;
+        background-color: rgba(12, 49, 89, 0.95);
     }
 
     .nav-button {
@@ -121,11 +131,25 @@
 
     .other-nav-menu {
         margin-left: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-   
+
+    .nav-acount-icon {
+        color: var(--thinLine);
+        font-size: 20px;
+    }
 
     .menu-icon {
         display: block;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid orangered;
+    }
+
+    .nav-icon {
+        font-size: 30px;
     }
 }

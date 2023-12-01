@@ -6,7 +6,7 @@ export default function FeaturesLeft(props) {
     useEffect(()=>{
         AOS.init({duration:1500})
       },[])
-    return (
+    return ( 
         <div className='features'>
             {/* data-aos="slide-right"data-aos-duration='1000' */}
          <div className='image'>
@@ -21,4 +21,4 @@ export default function FeaturesLeft(props) {
         
      </div>
       )
-}
+} 

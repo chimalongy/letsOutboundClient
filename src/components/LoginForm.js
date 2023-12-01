@@ -10,10 +10,10 @@ import { setUserTasks } from '../modules/redux/userTasksSlice';
 import useDataUpdater from '../modules/useDataUpdater';
 
 function LoginForm(props) {
-    const port="http://localhost:4000"
-    const {refreshUserOutbounds}= useDataUpdater()
-    const {refreshUserEmails}= useDataUpdater()
-    const {refreshUserTasks}= useDataUpdater()
+    const port = ""
+    const { refreshUserOutbounds } = useDataUpdater()
+    const { refreshUserEmails } = useDataUpdater()
+    const { refreshUserTasks } = useDataUpdater()
     const user = useSelector((state) => state.user.userData);
     const uEmails = useSelector((state) => state.userEmails.userEmails);
     const navigate = useNavigate()
@@ -60,7 +60,7 @@ function LoginForm(props) {
                 email: formData.email,
                 password: formData.password
             };
-            const url = port+'/login'
+            const url = port + '/login'
             dataFetch(url, requestData)
                 .then((result) => {
                     console.log("this is the result of the first check message: " + result.message)
@@ -71,11 +71,11 @@ function LoginForm(props) {
                         const userData = result.userData
                         console.log(userData)
                         localStorage.setItem("token", token);
-                        
 
-                        refreshUserOutbounds({ownerAccount: userData.email})
-                        refreshUserTasks({ownerAccount: userData.email})
-                        refreshUserEmails({ownerAccount: userData.email})
+
+                        refreshUserOutbounds({ ownerAccount: userData.email })
+                        refreshUserTasks({ ownerAccount: userData.email })
+                        refreshUserEmails({ ownerAccount: userData.email })
                         dispatch(
                             login({
                                 firstName: userData.firstName,
@@ -85,7 +85,7 @@ function LoginForm(props) {
 
                         )
                         navigate("/dashboard")
-                        
+
                         // //Get Outbond EEmails
                         // const requestData = {
                         //     ownerAccount: userData.email
@@ -96,8 +96,8 @@ function LoginForm(props) {
                         //         const userEmails = result.data;
                         //         if (result.message === "emails-found") {
 
-                                   
-                                   
+
+
 
                         //             //GETTING OUTBOUND DATA
                         //             const newrequestData = {
@@ -136,11 +136,11 @@ function LoginForm(props) {
                         //                                 dispatch(setUserOutbounds({
                         //                                     outbounds: userOutbounds
                         //                                 }))
-                                                        
+
                         //                                 dispatch(setUserTasks({
                         //                                     task: userTasks
                         //                                 }))
-                                                        
+
 
                         //                                 navigate("/dashboard")
                         //                             })

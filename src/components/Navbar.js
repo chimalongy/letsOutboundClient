@@ -10,6 +10,7 @@ import OutboundEmails from '../components/OutboundEmails';
 import UserOutbound from '../components/UserOutbound';
 import Dashboard from '../routes/Dashboard';
 import DashboardMenu from './DashboardMenu';
+import Logo from './Logo';
 
 const Navbar = () => {
   const issUserLoggedin = !!localStorage.getItem("token")
@@ -34,14 +35,17 @@ const Navbar = () => {
   const toggleMenu = () => {
     setShowNav(!showNav);
     if (!showNav) {
+      document.body.style.overflow = 'hidden';
       navMenu.current.classList.add('nav-links-mobile');
     } else {
+      document.body.style.overflow = '';
       navMenu.current.classList.remove('nav-links-mobile');
     }
   };
 
   const closeMenu = () => {
     setShowNav(false);
+    document.body.style.overflow = '';
     navMenu.current.classList.remove('nav-links-mobile');
   };
 
@@ -50,19 +54,19 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="nav-container">
         <NavLink to="/" onClick={closeMenu}>
-          <div className="logo">LETS<span>OUTBOUND</span></div>
+          <Logo />
         </NavLink>
 
         <ul className="nav-links" ref={navMenu}>
-          <li>
+          {/* <li>
             <NavLink to="" onClick={closeMenu}>
               About
             </NavLink>
-          </li>
+          </li> */}
 
           <li>
-            <NavLink to="" onClick={closeMenu}>
-              Support
+            <NavLink to="/contact" onClick={closeMenu}>
+              Contact
             </NavLink>
           </li>
 
@@ -79,13 +83,13 @@ const Navbar = () => {
               closeMenu()
             }
 
-          }}> <i class="fa-solid fa-user" title='account'></i></Link>
+          }}> <i class="fa-solid fa-user nav-acount-icon" title='account'></i></Link>
 
           <div className="menu-icon" onClick={toggleMenu}>
             {showNav ? (
-              <i className="fa-solid fa-circle-xmark"></i>
+              <i className="fa-solid fa-xmark nav-icon"></i>
             ) : (
-              <i className="fa-solid fa-bars"></i>
+              <i className="fa-solid fa-bars nav-icon"></i>
             )}
           </div>
         </div>

@@ -1,10 +1,67 @@
-
-
-.Login{
-    width: 100%;
+.login {
+   width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 450px;
+  }
+  .login>form{
+    margin:auto
+  }
+  
+  .page-head {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+ 
+  
+  .remember-me {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .error {
+    color: #ff0000;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .login-navigator{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
-}
+    text-align: center;
+    margin: 10px auto 30px  auto;
+  }
+
+  .new-password-change-div{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+ 
+  
+
+  .cancel-password-change{
+    margin-top: 20px;
+  }
+  @media screen and (max-width:750px) {
+    .login {
+      padding: 40px;
+    }
+  
+    input {
+      font-size: 14px;
+    }
+  
+    .error {
+      font-size: 12px;
+    }
+  }
+  
+
+  
+  

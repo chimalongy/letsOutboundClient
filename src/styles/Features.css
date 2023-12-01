@@ -3,18 +3,18 @@
     justify-content: space-between;
     width: 100%;
     
-} 
+}
 
 .features>.wordings {
     width: 50%;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
     justify-content: center;
 }
 
 .features>.wordings>h3 {
     font-size: 25px;
-    color: var(--color2);
+    color: orangered;
     font-weight: bold;
     display: flex;
     justify-content: center;
@@ -32,7 +32,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
 }
 
 .features>.image>img {
@@ -44,11 +44,13 @@
 
 @media screen and (max-width:750px) {
     .features {
-       flex-direction: column-reverse;
-    } 
+        flex-direction: column-reverse;
+    }
+
     .features>.wordings {
         width: 100%;
     }
+
     .features>.image {
         width: 100%;
     }

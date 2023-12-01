@@ -1,34 +1,73 @@
-/* Style for the footer container */
+/* Style for the footer */
 footer {
-    background-color: var(--color1);
-    color: #fff;
-    padding: 20px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  justify-content: space-around;
+  background-color: var(--color1);
+  color: #fff;
+  padding: 20px;
+}
+
+.footer-container {
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-between;
+  width: 85%;
+  padding: 40px;
+}
+
+/* Style for each column in the footer */
+.footer-column {
+  flex: 1;
+  margin-right: 20px;
+}
+
+/* Style for column titles */
+.footer-column h3 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+/* Style for social icons */
+.social-icons a {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  margin-bottom: 5px;
+}
+
+/* Style for contact information */
+.contact-info p {
+  margin-bottom: 5px;
+}
+
+/* Style for the address */
+.footer-column p {
+  margin-bottom: 5px;
+}
+
+/* Style for Font Awesome icons */
+svg {
+  margin-right: 5px;
+}
+
+/* Hover effect on links */
+a:hover {
+  text-decoration: underline;
+}
+
+.bottomBarStyle {
+  background-color: black;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  border-radius: 30px;
+}
+
+@media screen and (max-width:750px) {
+
+  .footer-container {
+    flex-direction: column;
+    gap: 20px;
     text-align: center;
   }
-  
-  /* Style for the footer links */
-  .footer-links {
-    margin-bottom: 10px;
-  }
-  
-  .footer-links a {
-    text-decoration: none;
-    color: #fff;
-    margin: 0 10px;
-  }
-  
-  /* Style for the contact information */
-  .contact-info {
-    margin: 10px 0;
-  }
-  
-  .contact-info p {
-    margin: 5px 0;
-  }
-  
-  /* Style for the copyright text */
-  .copyright {
-    font-size: 12px;
-    margin-top: 10px;
-  }
-  
+}

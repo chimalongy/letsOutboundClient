@@ -4,16 +4,22 @@ import "../styles/AddNewEmail.css"
 import dataFetch from '../modules/dataFetch';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserEmails } from '../modules/redux/userEmailsSlice';
+import useDataUpdater from '../modules/useDataUpdater';
 
 function AddNewEmail(props) {
     const port = ""
+    const { refreshUserOutbounds } = useDataUpdater()
+    const { refreshUserEmails } = useDataUpdater()
+    const { refreshUserTasks } = useDataUpdater()
     const dispatch = useDispatch()
     const user = useSelector((state) => state.user.userData);
     const [sendFromSecondaryEmail, setSendFromSecondaryEmail] = useState(false);
+    const [addPrimaryEmailError, setAddPrimaryEmailError] = useState("")
+    const [addSecondaryEmailError, setAddSecondaryEmailError] = useState("")
+    const [loadingAddEmail, setLoadingAddEmail] = useState(false)
 
 
-    const [submissionMessage, setSubmissionMessage] = useState()
-    const [submission2Message, setSubmission2Message] = useState()
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -28,93 +34,95 @@ function AddNewEmail(props) {
         signature: '',
     });
 
-    const [errors, setErrors] = useState({
-        name: '',
-        email: '',
-        password: '',
-        sendingCapacity: '',
-        signature: '',
-    });
-    const [errors2, setErrors2] = useState({
-        name: '',
-        email: '',
-        password: '',
-        signature: '',
-    });
+
+
+    async function testEmail(email, sendingAs, password) {
+        let requestData = {
+            email: email,
+            sendas: sendingAs,
+            password: password
+        }
+        const url = port + "/testemail"
+        let result = await dataFetch(url, requestData)
+        if (result.message === "sent") { return true }
+        else { return false }
+
+    }
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+
     };
     const handleChange2 = (e) => {
         const { name, value } = e.target;
         setFormData2({ ...formData2, [name]: value });
+
     };
 
     const validateForm = () => {
-        const newErrors = { ...errors };
+
 
         // Name validation (non-empty)
         if (!formData.name.trim()) {
-            newErrors.name = 'Name is required';
-        } else {
-            newErrors.name = '';
+            setAddPrimaryEmailError('Name is required')
+            return false
         }
 
         // Email validation (basic format)
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.toLowerCase())) {
-            newErrors.email = 'Invalid email address';
-        } else {
-            newErrors.email = '';
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.toLowerCase())) {
+
+            setAddPrimaryEmailError('Invalid email address')
+            return false;
         }
 
         // Password validation (minimum length)
-        if (formData.password.length !== 16) {
-            newErrors.password = 'Password must be 16 characters long';
-        } else {
-            newErrors.password = '';
+        else if (formData.password.length !== 16) {
+            setAddPrimaryEmailError('App password must be 16 characters long')
+            return false;
         }
 
         // Sending Capacity validation (numeric and positive)
-        if (!/^[1-9][0-9]*$/.test(formData.sendingCapacity)) {
-            newErrors.sendingCapacity = 'Sending capacity must be a positive number';
-        } else {
-            newErrors.sendingCapacity = '';
+        else if (!/^[1-9][0-9]*$/.test(formData.sendingCapacity)) {
+            setAddPrimaryEmailError('Sending capacity must be a positive number')
+            return false;
         }
 
         // Signature validation (non-empty)
-        if (!formData.signature) {
-            newErrors.signature = 'Signature is required. For an empty signature, press the space button';
-        } else {
-            newErrors.signature = '';
+        else if (!formData.signature) {
+
+            setAddPrimaryEmailError('Signature is required. For an empty signature, press the space button')
+            return false;
+        }
+        else {
+            return true
         }
 
-        setErrors(newErrors);
 
-        return Object.values(newErrors).every((error) => !error);
     };
     const validateForm2 = () => {
-        const newErrors = { ...errors2 };
+
 
         // Name validation (non-empty)
         if (!formData2.name.trim()) {
-            newErrors.name = 'Name is required';
-        } else {
-            newErrors.name = '';
+
+            setAddSecondaryEmailError("Name is required")
+            return false
         }
 
         // Email validation (basic format)
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData2.email.toLocaleLowerCase())) {
-            newErrors.email = 'Invalid email address';
-        } else {
-            newErrors.email = '';
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData2.email.toLocaleLowerCase())) {
+
+            setAddSecondaryEmailError("Invalid email address")
+            return false
         }
 
         // Password validation (minimum length)
-        if (formData2.password.length !== 16) {
-            newErrors.password = 'Password must be 16 characters long';
-        } else {
-            newErrors.password = '';
+        else if (formData2.password.length !== 16) {
+
+            setAddPrimaryEmailError("Password must be 16 characters long")
+            return false
         }
 
         // // Sending Capacity validation (numeric and positive)
@@ -125,21 +133,21 @@ function AddNewEmail(props) {
         // }
 
         // Signature validation (non-empty)
-        if (!formData2.signature) {
-            newErrors.signature = 'Signature is required. For an empty signature, press the space button';
-        } else {
-            newErrors.signature = '';
+        else if (!formData2.signature) {
+            setAddPrimaryEmailError("Signature is required. For an empty signature, press the space button")
+            return false
+        }
+        else {
+            return true
         }
 
-        setErrors2(newErrors);
-
-        return Object.values(newErrors).every((error) => !error);
     };
 
     const handleSubmit = async () => {
 
-        setSubmission2Message("")
-        setSubmissionMessage("")
+        setAddSecondaryEmailError("")
+        setAddPrimaryEmailError("")
+
 
         async function getuseroutboundemails() {
             try {
@@ -204,15 +212,15 @@ function AddNewEmail(props) {
 
                 if (result.message === "not-found") {
                     // emailAvailability = true;
-                    // setSubmissionMessage("");
-
                     return true;
                 } else if (result.message === "found") {
-                    // setSubmissionMessage("This email is already in use for outbounding");
+
                     return result.data;
                 }
                 else {
+                    console.log(result.message)
                     return "connection error"
+
                 }
             } catch (error) {
                 console.log(error);
@@ -234,35 +242,52 @@ function AddNewEmail(props) {
 
         if (!sendFromSecondaryEmail) {
             if (validateForm()) {
-
+                setLoadingAddEmail(true)
                 let emailAvailability = await (checkEmailAvailabiliy(formData.email.toLocaleLowerCase()))
 
-                if (emailAvailability == true) {
-                    const requestData = {
-                        ownerAccount: user.email,
-                        emailAddress: formData.email.toLocaleLowerCase(),
-                        password: formData.password,
-                        senderName: formData.name,
-                        signature: formData.signature,
-                        dailySendingCapacity: formData.sendingCapacity,
-                        primary: true,
-                        parentEmail: ""
-                    };
 
-                    const registered = await registeremail(requestData)
-                    if (registered) {
-                        let rehydrated = getuseroutboundemails()
-                        props.openModal(false);
+                if (emailAvailability == true) {
+                    //  let    k= await  testEmail(formData.email.toLocaleLowerCase(), formData.email.toLocaleLowerCase(), formData.password)
+                    //     alert(k)
+                    if (await testEmail(formData.email.toLocaleLowerCase(), formData.email.toLocaleLowerCase(), formData.password)) {
+                        const requestData = {
+                            ownerAccount: user.email,
+                            emailAddress: formData.email.toLocaleLowerCase(),
+                            password: formData.password,
+                            senderName: formData.name,
+                            signature: formData.signature,
+                            dailySendingCapacity: formData.sendingCapacity,
+                            primary: true,
+                            parentEmail: ""
+                        };
+
+                        const registered = await registeremail(requestData)
+                        if (registered) {
+                            let rehydrated = getuseroutboundemails()
+                            refreshUserOutbounds({ ownerAccount: user.email })
+                            refreshUserTasks({ ownerAccount: user.email })
+                            refreshUserEmails({ ownerAccount: user.email })
+                            props.openModal(false);
+                        }
+                        else {
+                            setAddPrimaryEmailError("An error occured when registering this email.")
+                            setLoadingAddEmail(false)
+                        }
                     }
                     else {
-                        setSubmissionMessage("An error occured when registering this email.")
+                        setAddPrimaryEmailError("Please review your creadentials. Test email failed")
+                        setLoadingAddEmail(false)
                     }
+
                 }
                 else if (emailAvailability !== true && emailAvailability !== "connection error") {
-                    setSubmissionMessage("This email is in use.")
+                    setAddPrimaryEmailError("This email is in use.")
+                    setLoadingAddEmail(false)
                 }
                 else {
-                    setSubmissionMessage("Connection failed.")
+                    setAddPrimaryEmailError("Connection failed.")
+                    setAddPrimaryEmailError(emailAvailability)
+                    setLoadingAddEmail(false)
                 }
 
 
@@ -276,54 +301,73 @@ function AddNewEmail(props) {
         }
         else {
             if (validateForm() && validateForm2()) {
-                console.log(formData)
-                console.log(formData2)
 
+                setLoadingAddEmail(true)
                 let emailAvailability1 = await (checkEmailAvailabiliy(formData.email.toLocaleLowerCase()))
                 let emailAvailability2 = await (checkEmailAvailabiliy(formData2.email.toLocaleLowerCase()))
 
+                let correctCredentials1 = await testEmail(formData.email.toLocaleLowerCase(), formData.email.toLocaleLowerCase(), formData.password)
+
+                let correctCredentials2 = await testEmail(formData.email.toLocaleLowerCase(), formData2.email.toLocaleLowerCase(), formData2.password)
+
                 if (emailAvailability1 !== true) {
 
-                    if (emailAvailability1 == "connection error") { setSubmissionMessage("Connection failed.") }
-                    else { setSubmissionMessage("One of these emails may have been registered") }
+                    if (emailAvailability1 == "connection error") {
+                        setAddPrimaryEmailError("Connection failed.");
+                        setLoadingAddEmail(false)
+                    }
+                    else {
+                        setAddPrimaryEmailError("One of these emails may have been registered");
+                        setLoadingAddEmail(false)
+                    }
                 }
                 else if (emailAvailability1 == true && emailAvailability2 == true) {
 
-                    const requestData1 = {
-                        ownerAccount: user.email,
-                        emailAddress: formData.email.toLocaleLowerCase(),
-                        password: formData.password,
-                        senderName: formData.name,
-                        signature: formData.signature,
-                        dailySendingCapacity: formData.sendingCapacity,
-                        primary: true,
-                        parentEmail: ""
-                    };
-
-                    const registered1 = await registeremail(requestData1)
-                    if (registered1) {
-
-
-                        const requestData2 = {
+                    if (correctCredentials1 && correctCredentials2) {
+                        const requestData1 = {
                             ownerAccount: user.email,
-                            emailAddress: formData2.email.toLocaleLowerCase(),
-                            password: formData2.password,
-                            senderName: formData2.name,
-                            signature: formData2.signature,
+                            emailAddress: formData.email.toLocaleLowerCase(),
+                            password: formData.password,
+                            senderName: formData.name,
+                            signature: formData.signature,
                             dailySendingCapacity: formData.sendingCapacity,
-                            primary: false,
-                            parentEmail: formData.email
+                            primary: true,
+                            parentEmail: ""
                         };
 
-                        const registered2 = await registeremail(requestData2)
-                        if (registered2) {
-                            let rehydrated = getuseroutboundemails()
-                            props.openModal(false);
-                        }
+                        const registered1 = await registeremail(requestData1)
+                        if (registered1) {
 
+
+                            const requestData2 = {
+                                ownerAccount: user.email,
+                                emailAddress: formData2.email.toLocaleLowerCase(),
+                                password: formData2.password,
+                                senderName: formData2.name,
+                                signature: formData2.signature,
+                                dailySendingCapacity: formData.sendingCapacity,
+                                primary: false,
+                                parentEmail: formData.email
+                            };
+
+                            const registered2 = await registeremail(requestData2)
+                            if (registered2) {
+                                let rehydrated = getuseroutboundemails()
+                                refreshUserOutbounds({ ownerAccount: user.email })
+                                refreshUserTasks({ ownerAccount: user.email })
+                                refreshUserEmails({ ownerAccount: user.email })
+                                props.openModal(false);
+                            }
+
+                        }
+                        else {
+                            setAddPrimaryEmailError("An error occured when registering this email")
+                            setLoadingAddEmail(false)
+                        }
                     }
                     else {
-                        setSubmissionMessage("An error occured when registering this email")
+                        setLoadingAddEmail(false)
+                        setAddPrimaryEmailError("Please review your creadentials. Test email failed")
                     }
 
                 }
@@ -341,52 +385,58 @@ function AddNewEmail(props) {
                                 }
                             }
 
-                            if (sameParent == false) { 
+                            if (sameParent == false) {
                                 // add email
 
                                 // console.log(similarEmails)
-
-                                const requestData1 = {
-                                    ownerAccount: user.email,
-                                    emailAddress: formData.email.toLocaleLowerCase(),
-                                    password: formData.password,
-                                    senderName: formData.name,
-                                    signature: formData.signature,
-                                    dailySendingCapacity: formData.sendingCapacity,
-                                    primary: true,
-                                    parentEmail: ""
-                                };
-            
-                                const registered1 = await registeremail(requestData1)
-                                if (registered1) {
-            
-            
-                                    const requestData2 = {
+                                if (correctCredentials1 && correctCredentials2) {
+                                    const requestData1 = {
                                         ownerAccount: user.email,
-                                        emailAddress: formData2.email.toLocaleLowerCase(),
-                                        password: formData2.password,
-                                        senderName: formData2.name,
-                                        signature: formData2.signature,
+                                        emailAddress: formData.email.toLocaleLowerCase(),
+                                        password: formData.password,
+                                        senderName: formData.name,
+                                        signature: formData.signature,
                                         dailySendingCapacity: formData.sendingCapacity,
-                                        primary: false,
-                                        parentEmail: formData.email
+                                        primary: true,
+                                        parentEmail: ""
                                     };
-            
-                                    const registered2 = await registeremail(requestData2)
-                                    if (registered2) {
-                                        let rehydrated = getuseroutboundemails()
-                                        props.openModal(false);
-                                    }
-            
-                                }
 
+                                    const registered1 = await registeremail(requestData1)
+                                    if (registered1) {
+
+
+                                        const requestData2 = {
+                                            ownerAccount: user.email,
+                                            emailAddress: formData2.email.toLocaleLowerCase(),
+                                            password: formData2.password,
+                                            senderName: formData2.name,
+                                            signature: formData2.signature,
+                                            dailySendingCapacity: formData.sendingCapacity,
+                                            primary: false,
+                                            parentEmail: formData.email
+                                        };
+
+                                        const registered2 = await registeremail(requestData2)
+                                        if (registered2) {
+                                            let rehydrated = getuseroutboundemails()
+                                            props.openModal(false);
+                                        }
+
+                                    }
+                                }
+                                else {
+                                    setLoadingAddEmail(false)
+                                    setAddPrimaryEmailError("Please review credentials. Test email failed")
+                                }
 
 
 
 
                             }
                             else {
-                                setSubmission2Message('This email is in use')
+                                setLoadingAddEmail(false)
+                                setAddSecondaryEmailError('This email is in use')
+
                             }
                         }
 
@@ -400,7 +450,8 @@ function AddNewEmail(props) {
         <div className='form-holder add-email-container'>
             <h2>Add Email</h2>
             <form onSubmit={(e) => { e.preventDefault() }}>
-                {submissionMessage && <p className='error'>{submissionMessage}</p>}
+
+                {addPrimaryEmailError && <div className='form-error-container'><p className='error'><i class="fa-solid fa-circle-exclamation"></i> {addPrimaryEmailError}</p></div>}
                 <div>
 
                     <input
@@ -411,7 +462,7 @@ function AddNewEmail(props) {
                         value={formData.name}
                         onChange={handleChange}
                     />
-                    <span className="error">{errors.name}</span>
+
                 </div>
                 <div>
 
@@ -423,7 +474,7 @@ function AddNewEmail(props) {
                         value={formData.email}
                         onChange={handleChange}
                     />
-                    <span className="error">{errors.email}</span>
+
                 </div>
                 <div>
 
@@ -435,7 +486,7 @@ function AddNewEmail(props) {
                         value={formData.password}
                         onChange={handleChange}
                     />
-                    <span className="error">{errors.password}</span>
+
                 </div>
                 <div>
 
@@ -447,7 +498,6 @@ function AddNewEmail(props) {
                         value={formData.sendingCapacity}
                         onChange={handleChange}
                     />
-                    <span className="error">{errors.sendingCapacity}</span>
                 </div>
                 <div>
 
@@ -459,10 +509,10 @@ function AddNewEmail(props) {
                         value={formData.signature}
                         onChange={handleChange}
                     />
-                    <span className="error">{errors.signature}</span>
+
                 </div>
                 <div>
-                    <label>
+                    <label className='choice-lable'>
                         <input
                             type="checkbox"
                             checked={sendFromSecondaryEmail}
@@ -479,7 +529,8 @@ function AddNewEmail(props) {
 
 
                     <form onSubmit={(e) => { e.preventDefault() }}>
-                        {submission2Message && <p className='error'>{submission2Message}</p>}
+
+                        {addSecondaryEmailError && <div className='form-error-container'><p className='error'><i class="fa-solid fa-circle-exclamation"></i> {addSecondaryEmailError}</p></div>}
                         <div>
 
                             <input
@@ -490,7 +541,7 @@ function AddNewEmail(props) {
                                 value={formData2.name}
                                 onChange={handleChange2}
                             />
-                            <span className="error">{errors2.name}</span>
+
                         </div>
                         <div>
 
@@ -502,7 +553,7 @@ function AddNewEmail(props) {
                                 value={formData2.email}
                                 onChange={handleChange2}
                             />
-                            <span className="error">{errors2.email}</span>
+
                         </div>
                         <div>
 
@@ -514,7 +565,7 @@ function AddNewEmail(props) {
                                 value={formData2.password}
                                 onChange={handleChange2}
                             />
-                            <span className="error">{errors2.password}</span>
+
                         </div>
                         {/*
                         
@@ -542,7 +593,7 @@ function AddNewEmail(props) {
                                 value={formData2.signature}
                                 onChange={handleChange2}
                             />
-                            <span className="error">{errors.signature}</span>
+
                         </div>
                     </form>
 
@@ -553,9 +604,9 @@ function AddNewEmail(props) {
 
 
             <div>
-                <button type="button" onClick={() => {
-                    handleSubmit()
-                }}>Submit</button>
+                <button className='site-button-thin' type="button" onClick={() => {
+                    if (!loadingAddEmail) { handleSubmit() }
+                }}>{loadingAddEmail ? <i className="fa-solid fa-spinner fa-spin spinner"></i> : <p>{sendFromSecondaryEmail ? "Add Emails" : "Add Email"}</p>}</button>
             </div>
 
         </div >

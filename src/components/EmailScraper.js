@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
-
+import dataFetch from '../modules/dataFetch';
+import { useDispatch, useSelector } from 'react-redux';
 function EmailScraper() {
 
     const [weblinks, setWebLinks] = useState('');
     const [isTextValid, setTextValid] = useState(true);
     const [listError, setListError] = useState("");
-
-
+    const port=""
+  
+    const user = useSelector((state) => state.user.userData);
     let verifiedLinks = []
 
     const handleTextChange = (e) => {
@@ -34,26 +36,42 @@ function EmailScraper() {
             return false
         }
 
-
-        // const webAddress = 'https://anthonysylvan.com/locations/texas/katy/?adsrc=YEXT';
-        // const url = new URL(webAddress);
-        // const domainName = url.hostname;
-        // console.log(domainName); // This will print 'anthonysylvan.com'
-
-
-
-
     }
 
+
+
+
+
+    
     const handleSubmit = (event) => {
         event.preventDefault();
+        function extractDomain(link) {
+            const parsedUrl = new URL(link);
+            let domain = parsedUrl.hostname;
+            // Remove 'www.' if it exists
+            domain = domain.replace(/^www\./, '');
+          
+            return domain;
+          }
         if (verifyLinks()) {
             let linkDomains=[]
            for (let i=0; i<verifiedLinks.length; i++){
-                const url = new URL(verifiedLinks[i]);
-                linkDomains.push(url.hostname)
+                
+                linkDomains.push(extractDomain(verifiedLinks[i]))
            }
-           console.log(linkDomains)
+           
+          let requestData={
+                ownerAccount:user.email,
+                domains:linkDomains,
+          }
+
+          let url= port+"/scrapEmails"
+          dataFetch(url, requestData)
+          .then(result=>{
+            console.log(result.message)
+          })
+          .catch(err=>console.log(err))
+
         }
 
     };

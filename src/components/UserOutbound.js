@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Modal from './Modal';
 import AddOutbound from './AddOutbound.js';
+import "../styles/UserOutbound.css"
 import dataFetch from '../modules/dataFetch';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -10,6 +11,7 @@ import Task from './Task';
 import ShowTasks from './ShowTasks';
 import DeleteOutbound from './DeleteOutbound';
 import RemoveEmails from './RemoveEmails';
+
 
 function UserOutbound() {
   const [showModal, setShowModal] = useState(false);
@@ -21,7 +23,7 @@ function UserOutbound() {
 
 
   const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage, setItemsPerPage] = useState(3)
+  const [itemsPerPage, setItemsPerPage] = useState(10)
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   let currentlist = uOutbounds.slice(indexOfFirstItem, indexOfLastItem)
@@ -30,24 +32,28 @@ function UserOutbound() {
   function ItemList(props) {
     return (
       <div className='itemList'>
+
         <ul>
           {
             props.data.map((outbound, index) => (
               <li key={index}>
-                <p>{outbound.outboundName}</p>
-                <div>
+
+                <div className='item-value'>
+                  <p>{outbound.outboundName}</p>
+                </div>
+                <div className='item-controls'>
                   <i className="fa-solid fa-circle-plus item-icon add" title='add task' onClick={
                     () => {
 
                       setModalChildren(<Task
                         data={outbound}
- 
+
                         openModal={setShowModal} />)
                       setShowModal(true);
                     }}
                   ></i>
 
-                  <i class="fa-solid fa-reply-all" title='remove from email list' onClick={()=>{
+                  <i class="fa-solid fa-reply-all" title='remove from email list' onClick={() => {
                     setModalChildren(<RemoveEmails
                       data={outbound}
 
@@ -57,7 +63,7 @@ function UserOutbound() {
 
                   <i className="fa-solid fa-clipboard-list item-icon list" title='task list' onClick={
                     () => {
-                      console.log(uTasks)
+
                       let outboundTasks = uTasks.filter(task => task.outboundName === outbound.outboundName)
                       setModalChildren(<ShowTasks data={outboundTasks} openModal={setShowModal} />)
                       setShowModal(true);
@@ -70,6 +76,26 @@ function UserOutbound() {
                     }
                   } ></i>
                 </div>
+                <details className='outbound-details'>
+                  <summary className='outbound-detail-summary'>See more </summary>
+                  <div className='outbound-email-details'>
+                    <div className='outbound-allocated-email'><b>Allocated Emails</b></div>
+                    <div className='outbound-allocated-email-capacity'><b>Emails Allocated</b></div>
+                  </div>
+                  <div>
+                    {outbound.emailList.map((item, index) => (
+                      <div key={index} className='outbound-email-details'>
+
+                        <div className='outbound-allocated-email'>{item.allocatedEmail !== item.sendingFrom ? (<p>{item.allocatedEmail}<br /><b>{item.sendingFrom}</b></p>) : (<p>{item.allocatedEmail}</p>)}</div>
+                        <div className='outbound-allocated-email-capacity'><b>{item.emailAllocations.length}</b></div>
+                        <div></div>
+                      </div>
+                    ))}
+                  </div>
+
+
+                </details>
+
               </li>
             ))
           }
@@ -81,9 +107,9 @@ function UserOutbound() {
 
   return (
     <div className='tab-content-container'>
-      <div className='tab-content-container-header'>
+      {/* <div className='tab-content-container-header'>
         <h1>Out Bounds</h1>
-      </div>
+      </div> */}
 
       <div className='tab-content-container-contents'>
         <div className='email-display-options'>

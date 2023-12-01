@@ -9,13 +9,18 @@
 .show-tasks>ul>li{
     padding: 10px;
     border:1px solid var(--thinLine);
+    
+   
+ }
+ .task-highlight{
+    padding: 10px;
+   
     display:flex;
     justify-content: space-between;
     border-radius: 10px;
     margin-bottom: 3px;
    
  }
-.show-tasks>ul>li>*{
+/* .show-tasks>ul>li>*{
     font-size: 14px;
-   
- }
+ } */

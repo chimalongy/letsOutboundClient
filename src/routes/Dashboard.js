@@ -1,77 +1,176 @@
-import UserDashboard from '../components/UserDashboard';
-
-import OutboundEmails from '../components/OutboundEmails';
-import UserOutbound from '../components/UserOutbound';
-import UserEmails from '../components/UserEmails';
-import DashboardMenu from '../components/DashboardMenu';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react'
 import "../styles/Dashboard.css"
 import dataFetch from '../modules/dataFetch';
+import axios from "axios"
+// import UserHome from './UserHome';
+// import UserInvest from './UserInvest';
+// import UserWithdraw from './UserWithdraw';
+// import UserTransaction from './UserTransaction';
+// import UserSettings from './UserSettings';
+import UserDashboard from '../components/UserDashboard';
+import OutboundEmails from '../components/OutboundEmails';
+import UserOutbound from '../components/UserOutbound';
+import UserHome from '../components/UserHome';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import UserScraping from '../components/UserScraping';
-function Dashboard(props) {
-  const [tabHeader, setTabHeader] = useState(null);
-  const [tabContent, setTabContent] = useState();
-  const dashboardRef = useRef();
-  const emailRef = useRef();
-  const outboundRef = useRef();
-  const ScrapRef = useRef();
-  
-  const [UserEmails, setUserEmails] = useState([])
-  const [loggedUser, setLoggedUser] = useState()
-  const user = useSelector((state) => state.user.userData);
-  const uEmails = useSelector((state) => state.userEmails.userEmails.emails);
-
-  const navmove= useNavigate()
-
-  useEffect(() => {
-    dashboardRef.current.click();
-    const User = localStorage.getItem("OutBoundUserData")
-    setLoggedUser(localStorage.getItem(User))
-
-  }, [])
-
-  const removeActive = () => {
-    dashboardRef.current.classList.remove("active");
-    emailRef.current.classList.remove("active");
-    outboundRef.current.classList.remove("active");
-    ScrapRef.current.classList.remove("active");
-  }
-
-  function setDashboardClick(){
-    setTabContent(<UserDashboard/>);removeActive(); dashboardRef.current.classList.add("active");
-  }
-
-  function setEmailClick(){
-    setTabContent(<OutboundEmails />); removeActive();  emailRef.current.classList.add("active");
-  }
-
-  function setOutboundClick(){
-    setTabContent(<UserOutbound/>); removeActive(); outboundRef.current.classList.add("active");
-  }
-  function setScrapClick(){
-    // setTabContent(<UserScraping/>); removeActive(); ScrapRef.current.classList.add("active");
-  }
-
-  
 
 
-  return (
+function Dashboard() {
+    useEffect(() => {
+        UDashboard.current.click()
+    }, [])
 
-    <div className='dash-board-container'>
-      <div className='dashboard-sidebar'>
-        <DashboardMenu setDashboardClick={setDashboardClick} setEmailClick={setEmailClick} setOutboundClick={setOutboundClick} setScrapClick={setScrapClick} dashboardRef={dashboardRef} emailRef={emailRef} outboundRef={outboundRef}  ScrapRef={ScrapRef}/>
-      </div>
-      <div className='dashboard-content-container'>
+    const user = useSelector((state) => state.user.userData);
+    const [brightTheme, setBrightTheme] = useState(true)
+    const [tabContent, setTabContent] = useState()
+    const [tabTittle, setTabTittle] = useState("")
+    const [tabDescription, setTabDescription] = useState("")
+    const [showSideBarMenu, setShowSideBarMenu] = useState(false)
 
-        {tabContent}
 
-       
-      </div>
 
-    </div>
-  )
+
+
+
+    function removeActive() {
+        UDashboard.current.classList.remove("active")
+        UEmails.current.classList.remove("active")
+        UOutbound.current.classList.remove("active")
+        // UTransactions.current.classList.remove("active")
+        // USettings.current.classList.remove("active")
+    }
+
+    const UDashboard = useRef();
+    const UEmails = useRef();
+    const UOutbound = useRef();
+    const sidebarmenu = useRef();
+    // const UTransactions = useRef();
+    // const USettings = useRef();
+
+
+    function closeSideBarMenu() {
+        setShowSideBarMenu(false)
+        sidebarmenu.current.classList.remove('side-bar-menu-mobile');
+    }
+    function openSideBarMenu() {
+        setShowSideBarMenu(true)
+        sidebarmenu.current.classList.add('side-bar-menu-mobile');
+    }
+
+    // function toggleSideBarMenu() {
+    //     setShowSideBarMenu(!showSideBarMenu)
+
+    //     // if (!showSideBarMenu) { sidebarmenu.current.classList.remove('side-bar-menu-mobile'); }
+    //     // else { sidebarmenu.current.classList.add('side-bar-menu-mobile'); }
+
+    //     if (showSideBarMenu) { sidebarmenu.current.classList.add('side-bar-menu-mobile'); }
+    //     else { sidebarmenu.current.classList.remove('side-bar-menu-mobile'); }
+
+    // }
+
+    function switchTheme() {
+        setBrightTheme(!brightTheme)
+    }
+    return (
+        <div className='dashboard-tab'>
+            <div className='dashboard-left'>
+                <div>
+                    {showSideBarMenu ? (<i class="fa-regular fa-rectangle-xmark side-bar-handbuger" onClick={() => { closeSideBarMenu() }}></i>) : (<i class="fa-solid fa-list side-bar-handbuger" onClick={() => { openSideBarMenu() }}></i>)}
+                </div>
+
+
+                <ul className='side-bar-menu' ref={sidebarmenu}  >
+                    <li ref={UDashboard} onClick={() => {
+                        setTabContent(<UserHome />)
+                        setTabTittle("Dashboard")
+                        setTabDescription("Welcome to your dashboard, " + user.firstName)
+                        removeActive();
+                        UDashboard.current.classList.add("active")
+                        closeSideBarMenu()
+                    }}>
+                        <p> <i class="fa-solid fa-house"></i> Dashboard</p>
+                    </li>
+                    <li ref={UEmails} onClick={() => {
+                        setTabContent(<OutboundEmails />)
+                        setTabTittle("Emails")
+                        setTabDescription("See all your emails in one page")
+                        removeActive();
+                        UEmails.current.classList.add("active")
+                        closeSideBarMenu()
+                    }}>
+                        <p><i class="fa-regular fa-envelope"></i> Emails</p>
+                    </li>
+                    <li ref={UOutbound} onClick={() => {
+                        setTabContent(<UserOutbound />)
+                        setTabTittle("Outbounds")
+                        setTabDescription("Create outbounds and schedule tasks")
+                        removeActive();
+                        UOutbound.current.classList.add("active")
+                        closeSideBarMenu()
+                    }}>
+                        <p> <i class="fa-regular fa-paper-plane"></i> Outbounds</p>
+
+                    </li>
+                    <li className='logout-button' onClick={() => {
+                        localStorage.removeItem("persist:userTasks")
+                        localStorage.removeItem("persist:userEmails")
+                        localStorage.removeItem("persist:userOutbounds")
+                        localStorage.removeItem("persist:userData")
+                        localStorage.removeItem("token")
+                        window.location.assign("/login")
+
+
+                    }}><i class="fa-solid fa-right-from-bracket"></i> Log Out</li>
+                    {/* <li ref={UTransactions} onClick={() => {
+                        // setTabContent(<UserTransaction />)
+                        setTabTittle("Transactions")
+                        setTabDescription("See all your past and pending transcations")
+                        removeActive();
+                        UTransactions.current.classList.add("active")
+                    }}>
+                        Transactions
+                    </li>
+                    <li ref={USettings} onClick={() => {
+                        // setTabContent(<UserSettings />)
+                        setTabTittle("Settings")
+                        setTabDescription("Make changes to your accont here")
+                        removeActive();
+                        USettings.current.classList.add("active")
+                    }}>
+
+                        Settings
+                    </li> */}
+                </ul>
+
+
+            </div>
+            <div className='dashboard-right'>
+                <div className='dash-board-right-top'>
+                    <div className='dashboard-controls'>
+                        {/* <div className='theme-selector'>
+                            {brightTheme ? (<i class="fa-solid fa-sun dashboard-small-icon" onClick={() => { switchTheme() }}></i>) : (<i className="fa-solid fa-moon dashboard-small-icon" onClick={() => { switchTheme() }}></i>)}
+                        </div> */}
+                        {/* <i class="fa-solid fa-bell dashboard-small-icon"></i> */}
+                        {/* <i class="fa-solid fa-gear dashboard-small-icon"></i>
+                        <i class="fa-solid fa-user dashboard-small-icon"></i> */}
+                    </div>
+
+                    <div className='dashboard-title'>
+                        <h1>{tabTittle}</h1>
+                        <p>{tabDescription}</p>
+                    </div>
+                </div>
+
+                <div className='dashboard-content'>
+
+                    {tabContent}
+
+                </div>
+            </div>
+
+
+
+        </div>
+    )
 }
 
 export default Dashboard

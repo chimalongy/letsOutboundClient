@@ -1,0 +1,49 @@
+/* Calendar Container */
+.calendar-container {
+    text-align: center;
+    /* max-width: 400px; */
+    margin: 0 auto;
+}
+
+/* Calendar Header */
+.calendar-header {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Calendar Table */
+.calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Calendar Table Header */
+.calendar-header-cell {
+    padding: 0.5rem;
+}
+
+/* Calendar Table Body */
+.calendar-body {
+    font-size: 1rem;
+}
+
+.calendar-row {
+    /* Additional styling for rows if needed */
+}
+
+/* Style for days of the current month */
+.calendar-cell.current-month {
+    background-color: #fff;
+}
+
+/* Style for days outside the current month */
+.calendar-cell.other-month {
+    background-color: #eee;
+    color: #888;
+}
+
+/* Hover effect for days */
+.calendar-cell:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}

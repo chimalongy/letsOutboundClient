@@ -25,7 +25,6 @@
 
 .email-display-options>div {
     width: calc(100% /4.5);
-
     padding: 20px;
     border: 1px solid var(--thinLine);
     border-radius: 20px;
@@ -96,6 +95,9 @@
 .battery {
     color: rgb(101, 150, 27)
 }
+
+
+
 
 @media screen and (max-width:750px) {
 

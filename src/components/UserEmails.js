@@ -9,6 +9,7 @@ import AddNewEmail from './AddNewEmail';
 import dataFetch from '../modules/dataFetch';
 
 function UserEmails() {
+  const port=""
   const [showModal, setShowModal] = useState(false);
   const [modalChildren, setModalChildren] = useState(null)
   const [loggedUser, setLoggedUser] = useState({})
@@ -27,7 +28,7 @@ function UserEmails() {
 
 
   function getUserEmails() {
-    const port="http://localhost:4000"
+    
     const requestData = {
       ownerAccount: loggedUser.email
     }

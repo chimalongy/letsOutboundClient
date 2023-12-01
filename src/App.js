@@ -1,39 +1,41 @@
 import Home from "./routes/Home";
 import Login from "./routes/Login";
 import Registration from "./routes/Registration";
-import{BrowserRouter, Routes, Route} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Dashboard from "./routes/Dashboard";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import UserEmails from "./components/UserEmails";
+import Contact from "./routes/Contact";
 
 
 
 function App() {
-  const issUserLoggedin=!!localStorage.getItem("token")
+  const issUserLoggedin = !!localStorage.getItem("token")
   return (
-  <div>
-    
-    <BrowserRouter> 
-        <Navbar/>
-      <Routes>
-        <Route path='register' element={<Registration />}></Route>
-        <Route path='login' element={<Login />}></Route>
-        <Route path='/' element={<Home />}></Route>
-        {/* {issUserLoggedin && <Route path='dashboard' element={<Dashboard/> }></Route>} */}
-        <Route path='dashboard' element={<Dashboard/> }/>
-       
-                       
-                          
-                        
-        
-      </Routes>
-      <Footer/>
-        </BrowserRouter>
+    <div>
+
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path='register' element={<Registration />}></Route>
+          <Route path='login' element={<Login />}></Route>
+          <Route path='/' element={<Home />}></Route>
+          <Route path='contact' element={<Contact />}></Route>
+          {/* {issUserLoggedin && <Route path='dashboard' element={<Dashboard />}></Route>} */}
+          <Route path='dashboard' element={<Dashboard />} />
 
 
-  </div>
+
+
+
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+
+
+    </div>
   );
 }
 

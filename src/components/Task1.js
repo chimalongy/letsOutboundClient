@@ -5,20 +5,9 @@ import "../styles/Task.css"
 import { setUserOutbounds } from '../modules/redux/userOutboundsSlice';
 import { setUserTasks } from '../modules/redux/userTasksSlice';
 import useDataUpdater from '../modules/useDataUpdater';
-import ReactQuill from 'react-quill';
-
-// You can choose a different theme if you like
-import 'react-quill/dist/quill.core.css';
-import 'react-quill/dist/quill.snow.css'
-import 'react-quill/dist/quill.bubble.css';
-// import 'react-quill/dist/quill.crimson.css';
-
-
 
 export default function Task(props) {
-    const port = ""
-    const [taskContentError, setTaskContentError] = useState("")
-    const [loadingAddTask, setLoadingAddTask] = useState(false)
+    const port=""
 
     const { refreshUserOutbounds } = useDataUpdater()
     const { refreshUserEmails } = useDataUpdater()
@@ -34,14 +23,9 @@ export default function Task(props) {
 
     let backbutton = useRef();
     const [currentOutbound, setCurrentOutbound] = useState(props.data)
-    const [selectedOption, setSelectedOption] = useState('text');
-    const [content, setContent] = useState('');//rich text editor content
 
     useEffect(() => {
         backbutton.current.style.display = "none";
-        refreshUserOutbounds({ ownerAccount: user.email })
-        refreshUserEmails({ ownerAccount: user.email })
-        refreshUserTasks({ ownerAccount: user.email })
         getOutboundData();
 
     }, [])
@@ -119,7 +103,6 @@ export default function Task(props) {
 
     const [showDate, setShowDate] = useState(true)
     const [dateSelectionError, setDatSelectionError] = useState("");
-    const [sendingRateError, setSendingRateError] = useState("");
 
     const currentDate = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
     const today = new Date();
@@ -146,64 +129,41 @@ export default function Task(props) {
         body: '',
     });
 
+    const [validationErrors, setValidationErrors] = useState({
+        subject: '',
+        greeting: '',
+        body: '',
+    });
 
     const validateForm = () => {
+        const errors = {
+            subject: '',
+            greeting: '',
+            body: '',
+        };
 
         if (formData.subject.trim() === '') {
-
-            setTaskContentError("Subject is required")
-            return false
+            errors.subject = 'Subject is required';
         }
-        else if (formData.greeting.trim() === '') {
-
-            setTaskContentError("Greeting is required")
-            return false
-        }
-        else if (formData.body.trim() === '') {
-
-            setTaskContentError("Body is required")
-            return false
-        }
-        else {
-            return true
+        if (formData.greeting.trim() === '') {
+            errors.greeting = 'Greeting is required';
         }
 
+        if (formData.body.trim() === '') {
+            errors.body = 'Body is required';
+        }
 
+        setValidationErrors(errors);
+
+        return Object.values(errors).every((error) => error === '');
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-
-
         if (validateForm()) {
-            setLoadingAddTask(true)
+
             const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            let taskbody = formData.body
-            let taskgreeting = formData.greeting.trim().replace(/[^a-zA-Z0-9\s]/g, '')
-
-
-
-            if (selectedOption == "html") {
-                let newTaskbody = ""
-                let newbody = [];
-                let tempDiv = document.createElement('div');
-                tempDiv.innerHTML = taskbody;
-                let paragraphs = tempDiv.getElementsByTagName('p');
-                for (let i = 0; i < paragraphs.length; i++) {
-                    newbody.push(paragraphs[i].innerText);
-                }
-
-                let newbody2 = newbody.filter(element => element != "")
-                for (let i = 0; i < newbody2.length; i++) {
-                    newTaskbody += `<p>${newbody2[i]}</p>`
-                }
-
-                taskbody = newTaskbody
-
-            }
-
-
             const requestData = {
                 ownerAccount: user.email,
                 outboundName: props.data.outboundName,
@@ -212,59 +172,58 @@ export default function Task(props) {
                 taskTime: sendingTime,
                 taskSendingRate: sendingRate,
                 taskSubject: formData.subject,
-                taskGreeting: taskgreeting,
-                taskBody: taskbody,
-                taskBodyType: selectedOption == "text" ? "text" : "html",
+                taskGreeting: formData.greeting,
+                taskBody: formData.body,
                 timeZone: userTimeZone
             }
-
+            console.log(props.data)
+            console.log(requestData)
             let url = port + '/registertask'
-            let result = await dataFetch(url, requestData)
-            if (result.message == "registrationComplete") {
-                // UPDATE SENDING DATES
-                // Get today's date
-                const today = new Date();
-                // Extract year, month, and day
-                const year = today.getFullYear();
-                const month = (today.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 because months are zero-based
-                const day = today.getDate().toString().padStart(2, '0');
-                // Create the formatted date string
-                const formattedDate = `${year}-${month}-${day}`;
+            await dataFetch(url, requestData)
+                .then((result) => {
+                    alert(result)
 
-                console.log("formatted date" + formattedDate);
+                    // UPDATE SENDING DATES
+                    // Get today's date
+                    const today = new Date();
+                    // Extract year, month, and day
+                    const year = today.getFullYear();
+                    const month = (today.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 because months are zero-based
+                    const day = today.getDate().toString().padStart(2, '0');
+                    // Create the formatted date string
+                    const formattedDate = `${year}-${month}-${day}`;
 
-                //GET OUTBOUND EMAILS 
-                url = port + "/updatedaysassigned"
-                for (let i = 0; i < props.data.emailList.length; i++) {
-                    let emailToUpdate = props.data.emailList[i].sendingFrom
-                    const requestData = {
-                        ownerAccount: user.email,
-                        email: emailToUpdate,
-                        day: formattedDate,
-                        taskName: `${props.data.outboundName}>task>${props.data.tasks + 1}`
+                    console.log("formatted date" + formattedDate);
+
+                    //GET OUTBOUND EMAILS 
+                    url = port + "/updatedaysassigned"
+                    for (let i = 0; i < props.data.emailList.length; i++) {
+                        let emailToUpdate = props.data.emailList[i].sendingFrom
+                        const requestData = {
+                            ownerAccount: user.email,
+                            email: emailToUpdate,
+                            day: formattedDate,
+                            taskName: `${props.data.outboundName}>task>${props.data.tasks + 1}`
+                        }
+                        dataFetch(url, requestData)
+                            .then()
+                            .catch(error => { console.log(error) })
                     }
-                    dataFetch(url, requestData)
-                        .then()
-                        .catch(error => { console.log(error) })
-                }
 
 
-                refreshUserOutbounds({ ownerAccount: user.email })
-                refreshUserEmails({ ownerAccount: user.email })
-                refreshUserTasks({ ownerAccount: user.email })
-                props.openModal(false);
-            }
-            else {
-                setTaskContentError("An error occured. Check internet connection")
-                setLoadingAddTask(false)
+                    refreshUserOutbounds({ ownerAccount: user.email })
+                    refreshUserEmails({ ownerAccount: user.email })
+                    refreshUserTasks({ ownerAccount: user.email })
+                    props.openModal(false)
 
-            }
+                })
+                .catch((error) => { console.log("regtask error" + error) })
+
 
 
         } else {
             // Form has errors, do not submit
-            setLoadingAddTask(false)
-
+            console.log('Form has errors');
         }
     };
 
@@ -276,37 +235,22 @@ export default function Task(props) {
         });
     };
 
-    const handleOptionChange = (event) => {
-        setSelectedOption(event.target.value);
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            body: '',
-        }));
-    };
 
-    const handleEditorChange = (value) => {
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            body: value,
-        }));
 
-    };
 
 
 
     return (
         <div className='form-holder task'>
             <h2 className="new-outbound-header">New Task <i ref={backbutton} onClick={() => { setShowDate(true); backbutton.current.style.display = "none"; }} className="fa-solid fa-circle-arrow-left"></i> </h2>
+            <p>For: <b>{props.data.outboundName}</b> Task: {props.data.tasks + 1}</p>
 
-            <div className='pop-sub-title' >
-                <p>For: <b>{props.data.outboundName}</b> Task: {props.data.tasks + 1}</p>
-            </div>
             {
                 showDate ? (
                     <div className='date-select'>
+                        <button onClick={() => { refreshUserOutbounds({ ownerAccount: user.email }) }}>click me</button>
+                        {dateSelectionError && <p className='error'>{dateSelectionError}</p>}
 
-
-                        {(dateSelectionError || sendingRateError) && <div className='form-error-container'><p className='error'><i class="fa-solid fa-circle-exclamation"></i> {(dateSelectionError || sendingRateError)}</p></div>}
                         <h3></h3>
                         <label htmlFor="datePicker">Select a date:</label>
                         <input
@@ -326,15 +270,11 @@ export default function Task(props) {
                             value={sendingRate}
                             onChange={(e) => { setSendingRate(e.target.value) }}
                         />
-                        <button className='site-button-thin' onClick={() => {
+                        <button className='add-outtbound-button' onClick={() => {
 
                             if (selectedDate == "") {
                                 setDatSelectionError("Please choose a date")
                             }
-                            else if (sendingRate == "" || sendingRate == null || sendingRate <= 0) {
-                                setSendingRateError("sending rate cannot be less than orr equal to 0")
-                            }
-
                             else {
                                 getOutboundData()
                                 var date_str = selectedDate.split('T')[0];
@@ -356,7 +296,7 @@ export default function Task(props) {
                                     //validate sending capacity
                                     //get ssending email arrays and their capacity
                                     let canSend = true;
-                                    let defaultingEmail = ""
+                                    let defaultingEmail=""
                                     let sendingEmailArray = [];
                                     let allocatedCapacity = []
                                     for (let i = 0; i < props.data.emailList.length; i++) {
@@ -379,40 +319,20 @@ export default function Task(props) {
                                                 if (hasSelectedDate) {
                                                     console.log(previousAssingedTaskNames)
                                                     // get task details
-                                                    let previousTasks = []
                                                     let OverAllPreviousCapacities = 0;
                                                     for (let l = 0; l < previousAssingedTaskNames.length; l++) {
-                                                        for (let indx = 0; indx < uTasks.length; indx++) {
-                                                            if (uTasks[indx].taskName == previousAssingedTaskNames[l]) {
-                                                                previousTasks.push(uTasks[indx])
-                                                            }
-                                                        }
+                                                        let previousTask = uTasks.filter((task) => task.taskName == previousAssingedTaskNames[l])
+                                                        console.log(previousTask)
+                                                        let previousOutboundName = previousTask[0].outboundName
+                                                        console.log(previousOutboundName)
+                                                        let previousAssignedOutbound = uOutbounds.filter((item) => item.outboundName == previousOutboundName)
+                                                        //   //get previous assinged capacity
+                                                        let previousAssignedAllocation = previousAssignedOutbound[0].emailList.filter((item) => item.sendingFrom == sendingEmailArray[j])
+                                                        console.log(previousAssignedAllocation)
+                                                        let previousAssignedCapacity = previousAssignedAllocation[0].emailAllocations.length
+                                                        console.log('capacity for ' + previousAssingedTaskNames[l] + " =" + previousAssignedCapacity)
+                                                        OverAllPreviousCapacities += previousAssignedCapacity;
                                                     }
-
-                                                    console.log(previousTasks)
-
-                                                    if (previousTasks.length > 0) {
-
-                                                        for (let indexI = 0; indexI < previousTasks.length; indexI++) {
-                                                            let previousOutboundName = previousTasks[indexI].outboundName
-                                                            let previousAssignedOutbound = uOutbounds.filter((item) => item.outboundName == previousOutboundName)
-                                                            let previousAssignedCapacity = 0;
-                                                            if (previousAssignedOutbound.length > 0) {
-                                                                let previousAssignedAllocation = previousAssignedOutbound[0].emailList.filter((item) => item.sendingFrom == sendingEmailArray[j])
-                                                                previousAssignedCapacity = previousAssignedAllocation[0].emailAllocations.length
-                                                                OverAllPreviousCapacities += previousAssignedCapacity;
-                                                            } else {
-                                                                previousAssignedCapacity += 0;
-                                                                OverAllPreviousCapacities += previousAssignedCapacity;
-                                                            }
-                                                        }
-
-                                                    }
-                                                    else {
-                                                        OverAllPreviousCapacities += 0;
-                                                    }
-
-
                                                     console.log(`
                                                          OVERALL PREVIOUS CAPACITIES FOR THIS DAY: ${OverAllPreviousCapacities}\n
                                                          ALLOCATED CAPACITY FOR THIS TASK: ${allocatedCapacity[j]}\n
@@ -421,7 +341,7 @@ export default function Task(props) {
 
                                                     if (uEmails[i].dailySendingCapacity < (OverAllPreviousCapacities + allocatedCapacity[j])) {
                                                         canSend = false;
-                                                        defaultingEmail = sendingEmailArray[j];
+                                                        defaultingEmail= sendingEmailArray[j] ;
                                                         break Loop1;
                                                     }
 
@@ -430,15 +350,15 @@ export default function Task(props) {
                                         }
                                     }
 
-                                    if (!canSend) {
+                                    if (!canSend){
                                         setDatSelectionError("You cannot assign more tasks on this date because the daily sending capacity of " + defaultingEmail + " will be exceeded")
                                     }
-                                    else {
+                                    else{
                                         setSendingDay(date_str)
-                                        setSendingTime(time_str)
-                                        backbutton.current.style.display = "block"
-                                        console.log(props.data.tasks + 1)
-                                        setShowDate(false)
+                                    setSendingTime(time_str)
+                                    backbutton.current.style.display = "block"
+                                    console.log(props.data.tasks + 1)
+                                    setShowDate(false)
                                     }
 
 
@@ -462,7 +382,6 @@ export default function Task(props) {
                     :
                     (
                         <div>
-                            {taskContentError && <div className='form-error-container'><p className='error'><i class="fa-solid fa-circle-exclamation"></i> {taskContentError}</p></div>}
                             <form onSubmit={handleSubmit}>
                                 <div>
 
@@ -474,7 +393,7 @@ export default function Task(props) {
                                         value={formData.subject}
                                         onChange={handleInputChange}
                                     />
-
+                                    <div className="error">{validationErrors.subject}</div>
                                 </div>
 
                                 <div>
@@ -489,74 +408,27 @@ export default function Task(props) {
                                             onChange={handleInputChange}
                                             style={{ width: "200px" }}
                                         />
-                                        , [Name]
+                                        , Name
                                     </div>
-
+                                    <div className="error">{validationErrors.greeting}</div>
                                 </div>
 
 
-                                <div className='bodyOptionContainer'>
-                                    <p>Body</p>
-                                    <div className='chooseTextType'>
-                                        <div>
-                                            <label>
-                                                <input
-                                                    type="radio"
-                                                    value="text"
-                                                    checked={selectedOption === 'text'}
-                                                    onChange={handleOptionChange}
-                                                />
-                                                Text
-                                            </label>
-                                        </div>
 
-                                        <div>
-                                            <label>
-                                                <input
-                                                    type="radio"
-                                                    value="html"
-                                                    checked={selectedOption === 'html'}
-                                                    onChange={handleOptionChange}
-                                                />
-                                                HTML
-                                            </label>
-                                        </div>
+                                <div>
 
-                                    </div>
+                                    <textarea
+                                        placeholder='email body'
+                                        id="body"
+                                        name="body"
+                                        value={formData.body}
+                                        onChange={handleInputChange}
+                                        rows={8}
+                                    />
+                                    <div className="error">{validationErrors.body}</div>
+                                    {"Email Signature"}
                                 </div>
-
-                                {selectedOption === 'text' ? (
-                                    <div>
-
-                                        <textarea
-                                            placeholder='email body'
-                                            id="body"
-                                            name="body"
-                                            value={formData.body}
-                                            onChange={handleInputChange}
-                                            rows={8}
-                                        />
-
-
-                                    </div>
-                                ) :
-                                    (
-                                        <div className="my-rich-text-editor">
-                                            <ReactQuill
-                                                theme="snow"
-                                                value={formData.body}
-                                                onChange={handleEditorChange}
-                                            />
-
-                                        </div>
-                                    )}
-
-
-
-
-
-                                {"[Email Signature]"}
-                                <button type="submit">{loadingAddTask ? (<i class="fa-solid fa-spinner fa-spin"></i>) : ("Add New Task")}</button>
+                                <button type="submit">Submit</button>
                             </form>
 
 
