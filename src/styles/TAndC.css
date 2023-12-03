@@ -1,0 +1,16 @@
+.tanc {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.tandcheader {
+    background-color: var(--color2);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.tanc section p {
+    margin-left: 20px;
+}

@@ -13,11 +13,13 @@
 }
 
 .outbound-allocated-email{
-    width:60%;
+    width:70%;
     padding: 2px;
+    overflow-x: auto;
 }
 .outbound-allocated-email-capacity{ 
-    width: 40%;
+    width: 30%;
     padding: 2px;
     text-align: right;
+    overflow-x: auto;
 }

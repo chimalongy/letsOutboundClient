@@ -260,6 +260,7 @@ select {
   margin-bottom: 20px;
   border-radius: 10px;
   font-size: 0.6rem;
+  overflow-x: auto;
 }
 
 @media screen and (max-width:750px) {
@@ -295,14 +296,16 @@ select {
 
   .itemList>ul>li>.item-value {
     display: flex;
+    flex-direction: column;
     width: 100%;
     justify-content: space-between;
-    align-items: center;
+    align-items: left;
     padding: 10px;
+    overflow-x: auto;
   }
 
   .itemList>ul>li>.item-value>p {
-    width: 60%;
+    width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

@@ -12,7 +12,7 @@ function ShowTasks(props) {
                             <li key={index}>
                                 <div className='task-highlight'>
                                     <p>{task.taskName}</p>
-                                    <div>
+                                     <div>
                                         <p>{task.taskDate}</p>
                                         <p>{task.taskTime}</p>
                                         <div>{task.status === "completed" ? (<i class="fa-solid fa-square-check completed" title='completed'></i>) : (<i class="fa-solid fa-circle-dot pending" title='pending'></i>)}</div>

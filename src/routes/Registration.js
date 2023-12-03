@@ -4,6 +4,8 @@ import '../styles/Registration.css';
 import Dashboard from './Dashboard';
 import dataFetch from '../modules/dataFetch';
 import registerImage from "../images/register.png"
+import Modal from '../components/Modal';
+import TAndC from '../components/TAndC';
 
 const RegistrationPage = () => {
   const port = ""
@@ -16,6 +18,8 @@ const RegistrationPage = () => {
   const regConfirmDiv = useRef(null);
   const [isTandCisChecked, setTandC] = useState(false);
 
+  const [showModal, setShowModal] = useState(false);
+  const [modalChildren, setModalChildren] = useState(null);
 
   const [formError, setFormError] = useState("");
   const [validationCodeError, setValidationCodeError] = useState("")
@@ -376,7 +380,10 @@ const RegistrationPage = () => {
                       }
 
 
-                    />I have read the <a href='/#'>Terms and Conditions</a>
+                    />I have read the <p onClick={() => {
+                      setModalChildren(<TAndC />)
+                      setShowModal(true);
+                    }}>Terms and Conditions</p>
                   </label>
 
 
@@ -424,11 +431,11 @@ const RegistrationPage = () => {
           </form>
 
           <div className='login-opt'>
-            <p>Already have an account? <strong onClick={()=>{window.location.assign("/login")}}>Login</strong></p>
+            <p>Already have an account? <strong onClick={() => { window.location.assign("/login") }}>Login</strong></p>
           </div>
         </div>
       </div >
-
+      {showModal ? (<Modal header="Add Account" children={modalChildren} show={setShowModal}></Modal>) : (<></>)}
     </div >
   );
 };
