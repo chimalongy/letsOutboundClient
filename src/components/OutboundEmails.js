@@ -111,7 +111,7 @@ function OutboundEmails(props) {
             </div>
           </div> */}
 
-        </div>
+        </div> 
 
         <div className='email-table'>
           <ItemList data={currentlist} />

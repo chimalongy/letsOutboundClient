@@ -16,7 +16,7 @@ import 'react-quill/dist/quill.bubble.css';
 
 
 export default function Task(props) {
-    const port = ""
+    const port = "http://localhost:4000"
     const [taskContentError, setTaskContentError] = useState("")
     const [loadingAddTask, setLoadingAddTask] = useState(false)
 
@@ -184,24 +184,24 @@ export default function Task(props) {
 
 
 
-            if (selectedOption == "html") {
-                let newTaskbody = ""
-                let newbody = [];
-                let tempDiv = document.createElement('div');
-                tempDiv.innerHTML = taskbody;
-                let paragraphs = tempDiv.getElementsByTagName('p');
-                for (let i = 0; i < paragraphs.length; i++) {
-                    newbody.push(paragraphs[i].innerText);
-                }
+            // if (selectedOption == "html") {
+            //     let newTaskbody = ""
+            //     let newbody = [];
+            //     let tempDiv = document.createElement('div');
+            //     tempDiv.innerHTML = taskbody;
+            //     let paragraphs = tempDiv.getElementsByTagName('p');
+            //     for (let i = 0; i < paragraphs.length; i++) {
+            //         newbody.push(paragraphs[i].innerText);
+            //     }
 
-                let newbody2 = newbody.filter(element => element != "")
-                for (let i = 0; i < newbody2.length; i++) {
-                    newTaskbody += `<p>${newbody2[i]}</p>`
-                }
+            //     let newbody2 = newbody.filter(element => element != "")
+            //     for (let i = 0; i < newbody2.length; i++) {
+            //         newTaskbody += `<p>${newbody2[i]}</p>`
+            //     }
 
-                taskbody = newTaskbody
+            //     taskbody = newTaskbody
 
-            }
+            // }
 
 
             const requestData = {

@@ -8,7 +8,7 @@ import Modal from '../components/Modal';
 import TAndC from '../components/TAndC';
 
 const RegistrationPage = () => {
-  const port = ""
+  const port = "http://localhost:4000"
   const firstName = useRef(null);
   const lastName = useRef(null);
   const email = useRef(null);
@@ -174,7 +174,7 @@ const RegistrationPage = () => {
                   setLoadingRegEmail(false);
                   //setFormError("An error occured while sending verification email")
                   enableRegInputs()
-                  setFormError(result.message)
+                  setFormError(result)
                 }
 
               })

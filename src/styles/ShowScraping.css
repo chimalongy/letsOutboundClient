@@ -1,0 +1,55 @@
+.show-scraping {
+    width: 650px;
+    background-color: white;
+    padding: 20px;
+    margin: auto;
+    border-radius: 15px;
+}
+
+.show-scraping>h2 {
+    font-size: 28px;
+    margin-bottom: 2rem;
+}
+
+.scraped-item {
+    display: flex;
+    border: 1px solid var(--thinLine);
+    justify-content: space-between;
+}
+
+.scrapedLink {
+    width: 60%;
+    background-color: var(--color2);
+    color: white;
+    padding: 10px;
+    word-wrap: break-word;
+}
+
+.scrapedemails {
+    width: 40%;
+    color: black;
+    padding: 10px;
+    word-wrap: break-word;
+}
+
+.copy-button {
+    padding: 10px;
+    display: flex;
+    justify-content: right;
+}
+
+@media screen and (max-width:750px) {
+    .show-scraping {
+        width: 90%;
+    }
+
+    .scraped-item {
+        flex-direction: column;
+    }
+
+    .scrapedLink,
+    .scrapedemails {
+        width: 100%;
+    }
+
+}

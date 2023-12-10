@@ -13,11 +13,12 @@ import { setUserTasks } from '../modules/redux/userTasksSlice';
 import useDataUpdater from '../modules/useDataUpdater';
 
 const Login = () => {
-  const port = ""
+  const port = "http://localhost:4000"
   const dispatch = useDispatch();
   const { refreshUserOutbounds } = useDataUpdater()
   const { refreshUserEmails } = useDataUpdater()
   const { refreshUserTasks } = useDataUpdater()
+  const { refreshUserScraping } = useDataUpdater()
   const user = useSelector((state) => state.user.userData);
   const uEmails = useSelector((state) => state.userEmails.userEmails);
   const navigate = useNavigate()
@@ -253,6 +254,7 @@ const Login = () => {
               refreshUserOutbounds({ ownerAccount: userData.email })
               refreshUserTasks({ ownerAccount: userData.email })
               refreshUserEmails({ ownerAccount: userData.email })
+              refreshUserScraping({ ownerAccount: userData.email })
               navigate("/dashboard")
 
 

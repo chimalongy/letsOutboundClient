@@ -9,7 +9,7 @@ import AddNewEmail from './AddNewEmail';
 import dataFetch from '../modules/dataFetch';
 
 function UserEmails() {
-  const port=""
+  const port = "http://localhost:4000"
   const [showModal, setShowModal] = useState(false);
   const [modalChildren, setModalChildren] = useState(null)
   const [loggedUser, setLoggedUser] = useState({})

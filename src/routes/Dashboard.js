@@ -2,15 +2,12 @@ import React, { useState, useEffect, useRef } from 'react'
 import "../styles/Dashboard.css"
 import dataFetch from '../modules/dataFetch';
 import axios from "axios"
-// import UserHome from './UserHome';
-// import UserInvest from './UserInvest';
-// import UserWithdraw from './UserWithdraw';
-// import UserTransaction from './UserTransaction';
-// import UserSettings from './UserSettings';
+
 import UserDashboard from '../components/UserDashboard';
 import OutboundEmails from '../components/OutboundEmails';
 import UserOutbound from '../components/UserOutbound';
 import UserHome from '../components/UserHome';
+import UserScraping from "../components/UserScraping"
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -35,6 +32,7 @@ function Dashboard() {
         UDashboard.current.classList.remove("active")
         UEmails.current.classList.remove("active")
         UOutbound.current.classList.remove("active")
+        UScraping.current.classList.remove("active")
         // UTransactions.current.classList.remove("active")
         // USettings.current.classList.remove("active")
     }
@@ -42,6 +40,7 @@ function Dashboard() {
     const UDashboard = useRef();
     const UEmails = useRef();
     const UOutbound = useRef();
+    const UScraping = useRef();
     const sidebarmenu = useRef();
     // const UTransactions = useRef();
     // const USettings = useRef();
@@ -110,6 +109,25 @@ function Dashboard() {
                         <p> <i class="fa-regular fa-paper-plane"></i> Outbounds</p>
 
                     </li>
+                    <li ref={UScraping} onClick={() => {
+                        setTabContent(<UserScraping />)
+                        setTabTittle("Scrapings")
+                        setTabDescription("Scrap Emails from links")
+                        removeActive();
+                        UScraping.current.classList.add("active")
+                        closeSideBarMenu()
+                    }}>
+                        <p> <i class="fa-regular fa-paper-plane"></i> Scraping</p>
+
+                    </li>
+
+
+
+
+
+
+
+
                     <li className='logout-button' onClick={() => {
                         localStorage.removeItem("persist:userTasks")
                         localStorage.removeItem("persist:userEmails")
@@ -120,25 +138,7 @@ function Dashboard() {
 
 
                     }}><i class="fa-solid fa-right-from-bracket"></i> Log Out</li>
-                    {/* <li ref={UTransactions} onClick={() => {
-                        // setTabContent(<UserTransaction />)
-                        setTabTittle("Transactions")
-                        setTabDescription("See all your past and pending transcations")
-                        removeActive();
-                        UTransactions.current.classList.add("active")
-                    }}>
-                        Transactions
-                    </li>
-                    <li ref={USettings} onClick={() => {
-                        // setTabContent(<UserSettings />)
-                        setTabTittle("Settings")
-                        setTabDescription("Make changes to your accont here")
-                        removeActive();
-                        USettings.current.classList.add("active")
-                    }}>
 
-                        Settings
-                    </li> */}
                 </ul>
 
 

@@ -7,7 +7,12 @@ import userReducer from "./userDataSlice"
 import emailReducer from "./userEmailsSlice"
 import outboundReducer from "./userOutboundsSlice"
 import taskReducer from "./userTasksSlice"
+import scrapeReducer from "./userScrapingsSlice"
 
+const scrapePersist = {
+    key: 'userScrapings',
+    storage,
+};
 const taskPersist = {
     key: 'userTasks',
     storage,
@@ -30,13 +35,15 @@ const loggedUserData = persistReducer(userPersist, userReducer);
 const loggedUserEmails = persistReducer(emailPersist, emailReducer);
 const loggedUserOutbounds = persistReducer(outboundPersist, outboundReducer);
 const loggedUserTasks = persistReducer(taskPersist, taskReducer);
+const loggedUserScrapings = persistReducer(scrapePersist, scrapeReducer);
 
 export const store = configureStore({
     reducer: {
         user: loggedUserData,
-        userEmails:loggedUserEmails,  
-        userOutbounds:loggedUserOutbounds,  
-        userTasks:loggedUserTasks,  
+        userEmails: loggedUserEmails,
+        userOutbounds: loggedUserOutbounds,
+        userTasks: loggedUserTasks,
+        userScrapings: loggedUserScrapings,
         devTools: process.env.NODE_ENV !== 'production',
         middleware: [thunk]
     }

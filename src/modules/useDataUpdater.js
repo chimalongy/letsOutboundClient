@@ -5,13 +5,14 @@ import { login } from '../modules/redux/userDataSlice';
 import { setUserEmails } from '../modules/redux/userEmailsSlice';
 import { setUserOutbounds } from '../modules/redux/userOutboundsSlice';
 import { setUserTasks } from '../modules/redux/userTasksSlice';
+import { setUserScrapings } from "../modules/redux/userScrapingsSlice"
 
 const useDataUpdater = () => {
 
     const user = useSelector((state) => state.user.userData);
     const uEmails = useSelector((state) => state.userEmails.userEmails);
     const dispatch = useDispatch();
-    const port = ""
+    const port = "http://localhost:4000"
 
     async function refreshUserOutbounds(requestData) {
         let url = port + '/getuseroutbounds'
@@ -47,11 +48,24 @@ const useDataUpdater = () => {
         }
 
     }
+    async function refreshUserScraping(requestData) {
+        let url = port + '/getuserscrapings'
+        const result = await dataFetch(url, requestData)
+        if (result) {
+            const userScrapings = result.data
+            console.log(result.data)
+            dispatch(setUserScrapings({
+                scrapings: userScrapings
+            }))
+        }
+
+    }
 
     return {
         refreshUserOutbounds,
         refreshUserEmails,
-        refreshUserTasks
+        refreshUserTasks,
+        refreshUserScraping
     }
 }
 

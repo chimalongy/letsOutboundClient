@@ -80,7 +80,7 @@ function UserOutbound() {
                   <summary className='outbound-detail-summary'>See more </summary>
                   <div className='outbound-email-details'>
                     <div className='outbound-allocated-email'><b>Allocated Emails</b></div>
-                    <div className='outbound-allocated-email-capacity'><b>Emails Allocated</b></div>
+                    <div className='outbound-allocated-email-capacity'><b>Alloc.</b></div>
                   </div>
                   <div>
                     {outbound.emailList.map((item, index) => (
