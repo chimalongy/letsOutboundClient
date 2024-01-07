@@ -8,7 +8,7 @@ import dataFetch from '../modules/dataFetch';
 
 
 export default function Contact() {
-    const port = "http://localhost:4000"
+    const port = ""
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');

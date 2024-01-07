@@ -42,7 +42,7 @@ function OutboundEmails(props) {
                   {/* {email.primaryEmail==false?(<i class="fa-solid fa-share-from-square" title={`sending from: ${email.parentEmail}`}></i>):(<></>)} */}
                   <p>{email.emailAddress} </p>
                   {email.primaryEmail == false ? (<div className='parent-detail'>{` ${email.parentEmail}`}</div>) : (<></>)}
- 
+
                 </div>
 
 
@@ -111,7 +111,7 @@ function OutboundEmails(props) {
             </div>
           </div> */}
 
-        </div> 
+        </div>
 
         <div className='email-table'>
           <ItemList data={currentlist} />

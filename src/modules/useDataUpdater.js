@@ -12,7 +12,7 @@ const useDataUpdater = () => {
     const user = useSelector((state) => state.user.userData);
     const uEmails = useSelector((state) => state.userEmails.userEmails);
     const dispatch = useDispatch();
-    const port = "http://localhost:4000"
+    const port = ""
 
     async function refreshUserOutbounds(requestData) {
         let url = port + '/getuseroutbounds'

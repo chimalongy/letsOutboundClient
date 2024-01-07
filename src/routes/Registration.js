@@ -8,7 +8,7 @@ import Modal from '../components/Modal';
 import TAndC from '../components/TAndC';
 
 const RegistrationPage = () => {
-  const port = "http://localhost:4000"
+  const port = ""
   const firstName = useRef(null);
   const lastName = useRef(null);
   const email = useRef(null);

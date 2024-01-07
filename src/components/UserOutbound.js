@@ -11,6 +11,7 @@ import Task from './Task';
 import ShowTasks from './ShowTasks';
 import DeleteOutbound from './DeleteOutbound';
 import RemoveEmails from './RemoveEmails';
+import SendSingle from './SendSingle.js';
 
 
 function UserOutbound() {
@@ -130,14 +131,15 @@ function UserOutbound() {
 
             </div>
           </div>
-          {/* 
-           <div className='email-stats'>
-          <h3>Outbound Stats</h3>
-           <div>
-            <p><b>This Week:</b> {0}</p>
-            <p><b>This Month</b> {0}</p>
+
+          <div className='add-Email' onClick={() => {
+            setModalChildren(<SendSingle openModal={setShowModal} />)
+            setShowModal(true);
+
+          }}>
+            <i class="fa-solid fa-envelope-open-text"></i>
+            <p>Single Email</p>
           </div>
-        </div> */}
 
         </div>
 

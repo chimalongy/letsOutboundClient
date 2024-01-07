@@ -14,11 +14,11 @@ function UserHome() {
     // const user = useSelector((state) => state.user.userData);
     // const uOutbounds = []
     // const uEmails = []
-    const uTasks = []
+    // const uTasks = []
     const user = useSelector((state) => state.user.userData);
     const uOutbounds = useSelector((state) => state.userOutbounds.userOutbounds.outbounds);
     const uEmails = useSelector((state) => state.userEmails.userEmails.emails);
-    // const uTasks = useSelector((state) => state.userTasks.userTasks.task);
+    const uTasks = useSelector((state) => state.userTasks.userTasks.task);
 
     // const [TotalCapacity, setTotalCapacity] = useState(0)
 

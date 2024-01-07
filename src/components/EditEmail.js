@@ -7,7 +7,7 @@ function EditEmail(props) {
     const { refreshUserOutbounds } = useDataUpdater()
     const { refreshUserEmails } = useDataUpdater()
     const { refreshUserTasks } = useDataUpdater()
-    const port = "http://localhost:4000"
+    const port = ""
     const user = useSelector((state) => state.user.userData);
     const [updateErrorMessage, setUpdateErrorMessage] = useState("")
 

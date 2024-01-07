@@ -13,7 +13,7 @@ import { setUserTasks } from '../modules/redux/userTasksSlice';
 import useDataUpdater from '../modules/useDataUpdater';
 
 const Login = () => {
-  const port = "http://localhost:4000"
+  const port = ""
   const dispatch = useDispatch();
   const { refreshUserOutbounds } = useDataUpdater()
   const { refreshUserEmails } = useDataUpdater()

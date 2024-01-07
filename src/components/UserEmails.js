@@ -9,7 +9,7 @@ import AddNewEmail from './AddNewEmail';
 import dataFetch from '../modules/dataFetch';
 
 function UserEmails() {
-  const port = "http://localhost:4000"
+  const port = ""
   const [showModal, setShowModal] = useState(false);
   const [modalChildren, setModalChildren] = useState(null)
   const [loggedUser, setLoggedUser] = useState({})
@@ -21,23 +21,23 @@ function UserEmails() {
     const User = localStorage.getItem("OutBoundUserData")
     setLoggedUser(JSON.parse(User))
     getUserEmails()
-   
-  
+
+
   }, [])
 
 
 
   function getUserEmails() {
-    
+
     const requestData = {
       ownerAccount: loggedUser.email
     }
-    const url = port+'/getuseroutboundemails'
+    const url = port + '/getuseroutboundemails'
     dataFetch(url, requestData)
-    .then(result=>setUserEmails(result.data))
-    .catch(error=>console.log(error))
-    
-    
+      .then(result => setUserEmails(result.data))
+      .catch(error => console.log(error))
+
+
     // console.log(result.data)
 
   }
@@ -101,7 +101,7 @@ function UserEmails() {
         </div>
 
         <div className='email-table'>
-          <button onClick={()=>{
+          <button onClick={() => {
             getUserEmails()
           }}>Hello</button>
           <div>

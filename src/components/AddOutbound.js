@@ -8,7 +8,7 @@ import { setUserOutbounds } from '../modules/redux/userOutboundsSlice';
 import useDataUpdater from '../modules/useDataUpdater';
 
 function AddOutbound(props) {
-    const port = "http://localhost:4000"
+    const port = ""
     const { refreshUserOutbounds } = useDataUpdater()
     const { refreshUserEmails } = useDataUpdater()
     const { refreshUserTasks } = useDataUpdater()
@@ -41,6 +41,8 @@ function AddOutbound(props) {
 
 
 
+    const [selectedEmailIndex, setSelectedEmailIndex] = useState()
+    const [selectedEmailAllocationCapacity, setSelectedEmailAllocationCapacity] = useState(0)
 
     function handleSelectChange(e) {
         if (emailListCount > 0) {
@@ -48,101 +50,202 @@ function AddOutbound(props) {
 
 
             if (selectedIndex !== "") {
+
+                setSelectedEmailIndex(selectedIndex)
                 const selectedEmail = outboundEmailList[selectedIndex];
+                setSelectedEmailAllocationCapacity(selectedEmail.dailySendingCapacity)
 
-                // Check if the email is already in selectedEmails
-                if (!selectedEmails.some((email) => email.emailAddress === selectedEmail.emailAddress)) {
+                // // Check if the email is already in selectedEmails
+                // if (!selectedEmails.some((email) => email.emailAddress === selectedEmail.emailAddress)) {
 
 
-                    if ((selectedEmail.primaryEmail == false) && (selectedEmails.some((email) => email.emailAddress === selectedEmail.parentEmail))) {
+                //     if ((selectedEmail.primaryEmail == false) && (selectedEmails.some((email) => email.emailAddress === selectedEmail.parentEmail))) {
 
-                        setSubmissionMessage(`You cannot allocate ${selectedEmail.emailAddress} and ${selectedEmail.parentEmail} in the same outbound`)
+                //         setSubmissionMessage(`You cannot allocate ${selectedEmail.emailAddress} and ${selectedEmail.parentEmail} in the same outbound`)
+                //     }
+                //     else if ((selectedEmail.primaryEmail == true) && (selectedEmails.some((email) => email.parentEmail === selectedEmail.emailAddress))) {
+                //         setSubmissionMessage(`You cannot allocate ${selectedEmail.emailAddress} and its secondary email in the same outbound`)
+
+                //     }
+                //     else {
+                //         console.log("old end user emails lent" + endUserEmails.length)
+
+                //         setSelectedEmails((prevSelected) => [...prevSelected, selectedEmail]);
+                //         let newAllocation = endUserEmails.slice(0, selectedEmail.dailySendingCapacity);
+                //         let nameAllocation = endUserNames.slice(0, selectedEmail.dailySendingCapacity);
+
+                //         let allocation = {
+                //             allocatedEmail: selectedEmail.emailAddress,
+                //             sendingFrom: selectedEmail.primaryEmail ? selectedEmail.emailAddress : selectedEmail.parentEmail,
+                //             emailAllocations: newAllocation,
+                //             nameAllocations: nameAllocation,
+                //         }
+                //         setOutboundAllocation([...outboundAllocation, allocation])
+
+                //         endUserEmails.splice(0, (selectedEmail.dailySendingCapacity));
+                //         endUserNames.splice(0, (selectedEmail.dailySendingCapacity));
+
+                //         console.log("new end user emails lent" + endUserEmails.length)
+
+
+                //         const newCapacity = endUserEmails.length
+                //         if (newCapacity > 0) { setEmailListCount(newCapacity) }
+                //         else { setEmailListCount(0) }
+
+                //     }
+
+
+
+                // }
+                // else {// email already on the list
+                //     if (selectedEmail.primaryEmail == true) {
+                //         setSubmissionMessage("This email is already selected")
+                //     }
+                //     else {
+                //         //check if they share the same parent
+                //         let sameParent = false
+                //         for (let i = 0; i < selectedEmails.length; i++) {
+                //             if ((selectedEmails[i].primaryEmail == false) && (selectedEmails[i].parentEmail == selectedEmail.parentEmail)) {
+                //                 sameParent = true
+                //             }
+                //         }
+
+                //         if (sameParent) {
+                //             setSubmissionMessage("This email is already selected")
+                //         }
+                //         else {
+
+                //             console.log("old end user emails lent" + endUserEmails.length)
+
+                //             setSelectedEmails((prevSelected) => [...prevSelected, selectedEmail]);
+                //             let newAllocation = endUserEmails.slice(0, selectedEmail.dailySendingCapacity);
+                //             let nameAllocation = endUserNames.slice(0, selectedEmail.dailySendingCapacity);
+
+
+                //             let allocation = {
+                //                 allocatedEmail: selectedEmail.emailAddress,
+                //                 sendingFrom: selectedEmail.primaryEmail ? selectedEmail.emailAddress : selectedEmail.parentEmail,
+                //                 emailAllocations: newAllocation,
+                //                 nameAllocations: nameAllocation,
+                //             }
+                //             setOutboundAllocation([...outboundAllocation, allocation])
+
+
+                //             endUserEmails.splice(0, (selectedEmail.dailySendingCapacity));
+                //             endUserNames.splice(0, (selectedEmail.dailySendingCapacity));
+
+                //             console.log("new end user emails lent" + endUserEmails.length)
+
+
+                //             const newCapacity = endUserEmails.length
+                //             if (newCapacity > 0) { setEmailListCount(newCapacity) }
+                //             else { setEmailListCount(0) }
+
+
+
+                //         }
+                //     }
+                // }
+
+
+            }
+        }
+
+    }
+
+
+    const handleAddEmail = (index, capacity) => {
+        setSubmissionMessage("")
+        const selectedEmail = outboundEmailList[index];
+        // Check if the email is already in selectedEmails
+        if (!selectedEmails.some((email) => email.emailAddress === selectedEmail.emailAddress)) {
+
+
+            if ((selectedEmail.primaryEmail == false) && (selectedEmails.some((email) => email.emailAddress === selectedEmail.parentEmail))) {
+
+                setSubmissionMessage(`You cannot allocate ${selectedEmail.emailAddress} and ${selectedEmail.parentEmail} in the same outbound`)
+            }
+            else if ((selectedEmail.primaryEmail == true) && (selectedEmails.some((email) => email.parentEmail === selectedEmail.emailAddress))) {
+                setSubmissionMessage(`You cannot allocate ${selectedEmail.emailAddress} and its secondary email in the same outbound`)
+
+            }
+            else {
+                console.log("old end user emails lent" + endUserEmails.length)
+
+                setSelectedEmails((prevSelected) => [...prevSelected, selectedEmail]);
+                let newAllocation = endUserEmails.slice(0, capacity);
+                let nameAllocation = endUserNames.slice(0, capacity);
+
+                let allocation = {
+                    allocatedEmail: selectedEmail.emailAddress,
+                    sendingFrom: selectedEmail.primaryEmail ? selectedEmail.emailAddress : selectedEmail.parentEmail,
+                    emailAllocations: newAllocation,
+                    nameAllocations: nameAllocation,
+                }
+                setOutboundAllocation([...outboundAllocation, allocation])
+
+                endUserEmails.splice(0, (capacity));
+                endUserNames.splice(0, (capacity));
+
+                console.log("new end user emails lent" + endUserEmails.length)
+
+
+                const newCapacity = endUserEmails.length
+                if (newCapacity > 0) { setEmailListCount(newCapacity) }
+                else { setEmailListCount(0) }
+
+            }
+
+
+
+        }
+        else {// email already on the list
+            if (selectedEmail.primaryEmail == true) {
+                setSubmissionMessage("This email is already selected")
+            }
+            else {
+                //check if they share the same parent
+                let sameParent = false
+                for (let i = 0; i < selectedEmails.length; i++) {
+                    if ((selectedEmails[i].primaryEmail == false) && (selectedEmails[i].parentEmail == selectedEmail.parentEmail)) {
+                        sameParent = true
                     }
-                    else if ((selectedEmail.primaryEmail == true) && (selectedEmails.some((email) => email.parentEmail === selectedEmail.emailAddress))) {
-                        setSubmissionMessage(`You cannot allocate ${selectedEmail.emailAddress} and its secondary email in the same outbound`)
+                }
 
+                if (sameParent) {
+                    setSubmissionMessage("This email is already selected")
+                }
+                else {
+
+                    console.log("old end user emails lent" + endUserEmails.length)
+
+                    setSelectedEmails((prevSelected) => [...prevSelected, selectedEmail]);
+                    let newAllocation = endUserEmails.slice(0, capacity);
+                    let nameAllocation = endUserNames.slice(0, capacity);
+
+
+                    let allocation = {
+                        allocatedEmail: selectedEmail.emailAddress,
+                        sendingFrom: selectedEmail.primaryEmail ? selectedEmail.emailAddress : selectedEmail.parentEmail,
+                        emailAllocations: newAllocation,
+                        nameAllocations: nameAllocation,
                     }
-                    else {
-                        console.log("old end user emails lent" + endUserEmails.length)
-
-                        setSelectedEmails((prevSelected) => [...prevSelected, selectedEmail]);
-                        let newAllocation = endUserEmails.slice(0, selectedEmail.dailySendingCapacity);
-                        let nameAllocation = endUserNames.slice(0, selectedEmail.dailySendingCapacity);
-
-                        let allocation = {
-                            allocatedEmail: selectedEmail.emailAddress,
-                            sendingFrom: selectedEmail.primaryEmail ? selectedEmail.emailAddress : selectedEmail.parentEmail,
-                            emailAllocations: newAllocation,
-                            nameAllocations: nameAllocation,
-                        }
-                        setOutboundAllocation([...outboundAllocation, allocation])
-
-                        endUserEmails.splice(0, (selectedEmail.dailySendingCapacity));
-                        endUserNames.splice(0, (selectedEmail.dailySendingCapacity));
-
-                        console.log("new end user emails lent" + endUserEmails.length)
+                    setOutboundAllocation([...outboundAllocation, allocation])
 
 
-                        const newCapacity = endUserEmails.length
-                        if (newCapacity > 0) { setEmailListCount(newCapacity) }
-                        else { setEmailListCount(0) }
+                    endUserEmails.splice(0, (capacity));
+                    endUserNames.splice(0, (capacity));
 
-                    }
+                    console.log("new end user emails lent" + endUserEmails.length)
+
+
+                    const newCapacity = endUserEmails.length
+                    if (newCapacity > 0) { setEmailListCount(newCapacity) }
+                    else { setEmailListCount(0) }
 
 
 
                 }
-                else {// email already on the list
-                    if (selectedEmail.primaryEmail == true) {
-                        setSubmissionMessage("This email is already selected")
-                    }
-                    else {
-                        //check if they share the same parent
-                        let sameParent = false
-                        for (let i = 0; i < selectedEmails.length; i++) {
-                            if ((selectedEmails[i].primaryEmail == false) && (selectedEmails[i].parentEmail == selectedEmail.parentEmail)) {
-                                sameParent = true
-                            }
-                        }
-
-                        if (sameParent) {
-                            setSubmissionMessage("This email is already selected")
-                        }
-                        else {
-
-                            console.log("old end user emails lent" + endUserEmails.length)
-
-                            setSelectedEmails((prevSelected) => [...prevSelected, selectedEmail]);
-                            let newAllocation = endUserEmails.slice(0, selectedEmail.dailySendingCapacity);
-                            let nameAllocation = endUserNames.slice(0, selectedEmail.dailySendingCapacity);
-
-
-                            let allocation = {
-                                allocatedEmail: selectedEmail.emailAddress,
-                                sendingFrom: selectedEmail.primaryEmail ? selectedEmail.emailAddress : selectedEmail.parentEmail,
-                                emailAllocations: newAllocation,
-                                nameAllocations: nameAllocation,
-                            }
-                            setOutboundAllocation([...outboundAllocation, allocation])
-
-
-                            endUserEmails.splice(0, (selectedEmail.dailySendingCapacity));
-                            endUserNames.splice(0, (selectedEmail.dailySendingCapacity));
-
-                            console.log("new end user emails lent" + endUserEmails.length)
-
-
-                            const newCapacity = endUserEmails.length
-                            if (newCapacity > 0) { setEmailListCount(newCapacity) }
-                            else { setEmailListCount(0) }
-
-
-
-                        }
-                    }
-                }
-
-
             }
         }
 
@@ -443,6 +546,23 @@ function AddOutbound(props) {
                                 </option>
                             ))}
                         </select>
+
+                        <div>
+                            <label>Allocations to this email</label>
+                            <div style={{ display: "flex" }}>
+                                <input
+                                    type="number"
+                                    min={0}
+                                    value={selectedEmailAllocationCapacity}
+                                    onChange={(e) => {
+                                        setSelectedEmailAllocationCapacity(e.target.value)
+                                    }}
+                                />
+                                <button className="site-button-short-thin" onClick={() => { handleAddEmail(selectedEmailIndex, selectedEmailAllocationCapacity) }}>Add allocation</button>
+
+                            </div>
+
+                        </div>
 
                     </div>
                     <div className="select-email-container">

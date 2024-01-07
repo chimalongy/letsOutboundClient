@@ -97,7 +97,7 @@ function Home() {
 
             <details className='home-details' data-aos="fade-up" data-aos-duration='700'>
               <summary className='home-summary'>HOW MANY GMAIL ACCONTS CAN I ADD <i class="fa-solid fa-chevron-right"></i></summary>
-              <p>There are no limit to the numbr of gmail accounts you can add to your LETSOUTBOUND account. As a matter of fact, your sending capacity increases with more emails.</p>
+              <p>There are no limits to the number of gmail accounts you can add to your LETSOUTBOUND account. As a matter of fact, your sending capacity increases with more emails.</p>
             </details>
 
             <details className='home-details' data-aos="fade-up" data-aos-duration='900'>
@@ -106,7 +106,7 @@ function Home() {
             </details>
             <details className='home-details' data-aos="fade-up" data-aos-duration='1200'>
               <summary className='home-summary'>CAN I SEND FROM A CUSTOM EMAIL LINKED WITH GMAIL <i class="fa-solid fa-chevron-right"></i></summary>
-              <p>No. You can cannot send emails from external emails linked to you gmail. We are currently working to add this feauture and will make a public annoncement when rolled out.</p>
+              <p>Yes of course! You can add and send emails through your gmail and they will appear as a business email to the receiver</p>
             </details>
           </div>
 

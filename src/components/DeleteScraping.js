@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 function DeleteScraping(props) {
-    const port = "http://localhost:4000"
+    const port = ""
     const { refreshUserOutbounds } = useDataUpdater()
     const { refreshUserEmails } = useDataUpdater()
     const { refreshUserTasks } = useDataUpdater()

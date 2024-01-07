@@ -6,13 +6,13 @@ import { Link } from 'react-router-dom'
 
 
 function Registration() {
-    const port=""
+    const port = ""
     const continueButton = useRef()
     let [formValid, setFormValid] = useState(false)
     const [emailVerificationCode, setEmailVerificationCode] = useState("")
     const [verifyEmailError, setVerifyEmailError] = useState("");
     const [generatedCode, setGeneratedCode] = useState("");
-    const [submissionMessage, setSubmissionMessage]= useState()
+    const [submissionMessage, setSubmissionMessage] = useState()
     function generateRandomCode(length) {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let randomCode = '';
@@ -53,17 +53,17 @@ function Registration() {
             const requestData = {
                 email: formData.email,
             };
-            const url = port+'/finduser';
+            const url = port + '/finduser';
             const result = await dataFetch(url, requestData)
             if (result.message === "found") {
-               setSubmissionMessage("This email has been registered. Please Login")
+                setSubmissionMessage("This email has been registered. Please Login")
             }
             else {
                 setSubmissionMessage("")
                 const randomCode = generateRandomCode(8)
                 setGeneratedCode(randomCode);
                 continueButton.current.disabled = true;
-                const url = port+'/sendregisterationcode'; // Replace with your actual API endpoint
+                const url = port + '/sendregisterationcode'; // Replace with your actual API endpoint
                 const requestData = {
                     recieverName: formData.firstname,
                     reciverEmail: formData.email,
@@ -87,18 +87,18 @@ function Registration() {
         if (emailVerificationCode === generatedCode) {
             setVerifyEmailError("")
 
-        const requestData = {
-            firstName: formData.firstname,
-            lastName: formData.lastname,
-            email: formData.email,
-            password: formData.password
-        };
-        const url = port+ '/register';
-        const result = await dataFetch(url, requestData)
-        if (result.message) {
-            alert("Regstration Complete")
-                    window.location.assign("/login")
-        }
+            const requestData = {
+                firstName: formData.firstname,
+                lastName: formData.lastname,
+                email: formData.email,
+                password: formData.password
+            };
+            const url = port + '/register';
+            const result = await dataFetch(url, requestData)
+            if (result.message) {
+                alert("Regstration Complete")
+                window.location.assign("/login")
+            }
         }
         else {
             setVerifyEmailError("invalid code")
@@ -147,7 +147,7 @@ function Registration() {
             <div className='form-holder'>
                 <h2>Registrater</h2>
                 <form onSubmit={handleSubmit}>
-                   {submissionMessage && <p className='error'>{submissionMessage}</p>}
+                    {submissionMessage && <p className='error'>{submissionMessage}</p>}
                     <div>
                         <input
                             type="text"

@@ -16,7 +16,7 @@ import 'react-quill/dist/quill.bubble.css';
 
 
 export default function Task(props) {
-    const port = "http://localhost:4000"
+    const port = ""
     const [taskContentError, setTaskContentError] = useState("")
     const [loadingAddTask, setLoadingAddTask] = useState(false)
 

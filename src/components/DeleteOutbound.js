@@ -8,7 +8,7 @@ import dataFetch from '../modules/dataFetch';
 import useDataUpdater from '../modules/useDataUpdater';
 
 function DeleteOutbound(props) {
-    const port = "http://localhost:4000"
+    const port = ""
     const { refreshUserOutbounds } = useDataUpdater()
     const { refreshUserEmails } = useDataUpdater()
     const { refreshUserTasks } = useDataUpdater()
