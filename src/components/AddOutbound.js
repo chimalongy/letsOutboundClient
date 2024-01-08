@@ -43,6 +43,7 @@ function AddOutbound(props) {
 
     const [selectedEmailIndex, setSelectedEmailIndex] = useState()
     const [selectedEmailAllocationCapacity, setSelectedEmailAllocationCapacity] = useState(0)
+    const [emailSelected, setEmailSelected] = useState(false)
 
     function handleSelectChange(e) {
         if (emailListCount > 0) {
@@ -54,7 +55,7 @@ function AddOutbound(props) {
                 setSelectedEmailIndex(selectedIndex)
                 const selectedEmail = outboundEmailList[selectedIndex];
                 setSelectedEmailAllocationCapacity(selectedEmail.dailySendingCapacity)
-
+                setEmailSelected(true)
                 // // Check if the email is already in selectedEmails
                 // if (!selectedEmails.some((email) => email.emailAddress === selectedEmail.emailAddress)) {
 
@@ -548,19 +549,28 @@ function AddOutbound(props) {
                         </select>
 
                         <div>
-                            <label>Allocations to this email</label>
-                            <div style={{ display: "flex" }}>
-                                <input
-                                    type="number"
-                                    min={0}
-                                    value={selectedEmailAllocationCapacity}
-                                    onChange={(e) => {
-                                        setSelectedEmailAllocationCapacity(e.target.value)
-                                    }}
-                                />
-                                <button className="site-button-short-thin" onClick={() => { handleAddEmail(selectedEmailIndex, selectedEmailAllocationCapacity) }}>Add allocation</button>
 
-                            </div>
+                            {
+                                emailSelected === true ? (
+                                    <div>
+                                        <label>Allocations to this email</label>
+                                        <div style={{ display: "flex" }}>
+                                            <input
+                                                type="number"
+                                                min={0}
+                                                value={selectedEmailAllocationCapacity}
+                                                onChange={(e) => {
+                                                    setSelectedEmailAllocationCapacity(e.target.value)
+                                                }}
+                                            />
+                                            <button className="site-button-short-thin" onClick={() => { handleAddEmail(selectedEmailIndex, selectedEmailAllocationCapacity); setEmailSelected(false) }}>Add allocation</button>
+
+                                        </div>
+
+                                    </div>
+                                ) : (<></>)
+                            }
+
 
                         </div>
 
