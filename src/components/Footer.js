@@ -21,7 +21,7 @@ const Footer = () => {
           <h3>Contact</h3>
           <div className="contact-info">
             <p><i class="fa-solid fa-phone"></i> (081) 579-67548</p>
-            <p><i class="fa-solid fa-envelope"></i> letsoutbound@gmail.com</p>
+            <p><i class="fa-solid fa-envelope"></i> me.chimaobi@gmail.com</p>
           </div>
         </div>
 
