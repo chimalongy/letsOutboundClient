@@ -23,6 +23,7 @@ const useDataUpdater = () => {
                 outbounds: userOutbounds
             }))
             console.log("outbound refreeshed")
+            return true;
         }
 
     }
@@ -34,6 +35,7 @@ const useDataUpdater = () => {
             dispatch(setUserEmails({
                 emails: userEmails
             }))
+            return true;
         }
 
     }
@@ -45,6 +47,7 @@ const useDataUpdater = () => {
             dispatch(setUserTasks({
                 task: userTasks
             }))
+            return true;
         }
 
     }
@@ -57,6 +60,7 @@ const useDataUpdater = () => {
             dispatch(setUserScrapings({
                 scrapings: userScrapings
             }))
+            return true;
         }
 
     }

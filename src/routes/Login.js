@@ -227,7 +227,7 @@ const Login = () => {
         console.log(requestData)
         const url = port + '/login'
         dataFetch(url, requestData)
-          .then((result) => {
+          .then(async (result) => {
             if (result.message === "not-registered") {
               setLoginError("Email not registered");
               setLoadingLogin(false)
@@ -251,11 +251,16 @@ const Login = () => {
 
 
 
-              refreshUserOutbounds({ ownerAccount: userData.email })
-              refreshUserTasks({ ownerAccount: userData.email })
-              refreshUserEmails({ ownerAccount: userData.email })
-              refreshUserScraping({ ownerAccount: userData.email })
-              navigate("/dashboard")
+              const outboundset = await refreshUserOutbounds({ ownerAccount: userData.email })
+              const tasksset = await refreshUserTasks({ ownerAccount: userData.email })
+              const emailsset = await refreshUserEmails({ ownerAccount: userData.email })
+              const scrapingset = await refreshUserScraping({ ownerAccount: userData.email })
+
+              if (outboundset && tasksset && emailsset && scrapingset) {
+                navigate("/dashboard")
+              }
+
+
 
 
 
