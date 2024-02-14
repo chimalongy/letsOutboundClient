@@ -149,30 +149,30 @@ function AddNewEmail(props) {
         setAddPrimaryEmailError("")
 
 
-        async function getuseroutboundemails() {
-            try {
-                const requestData = { ownerAccount: user.email }
+        // async function getuseroutboundemails() {
+        //     try {
+        //         const requestData = { ownerAccount: user.email }
 
-                const url = port + '/getuseroutboundemails'
-                const result = await dataFetch(url, requestData)
+        //         const url = port + '/getuseroutboundemails'
+        //         const result = await dataFetch(url, requestData)
 
-                const userEmails = result.data;
-                if (result.message === "emails-found") {
-                    // console.log(userEmails)
-                    // console.log("is user Email an Array? " + Array.isArray(userEmails))
-                    dispatch(setUserEmails({
-                        emails: userEmails
-                    }))
-                    return true;
-                }
-                else { return false }
+        //         const userEmails = result.data;
+        //         if (result.message === "emails-found") {
+        //             // console.log(userEmails)
+        //             // console.log("is user Email an Array? " + Array.isArray(userEmails))
+        //             dispatch(setUserEmails({
+        //                 emails: userEmails
+        //             }))
+        //             return true;
+        //         }
+        //         else { return false }
 
 
-            } catch (error) {
+        //     } catch (error) {
 
-            }
+        //     }
 
-        }
+        // }
 
         async function getSimilarEmails(email) {
             console.log("finding simlar eamils for :" + email)
@@ -263,11 +263,14 @@ function AddNewEmail(props) {
 
                         const registered = await registeremail(requestData)
                         if (registered) {
-                            let rehydrated = getuseroutboundemails()
-                            refreshUserOutbounds({ ownerAccount: user.email })
-                            refreshUserTasks({ ownerAccount: user.email })
-                            refreshUserEmails({ ownerAccount: user.email })
-                            props.openModal(false);
+
+                            if (refreshUserOutbounds({ ownerAccount: user.email }) && refreshUserTasks({ ownerAccount: user.email }) && refreshUserEmails({ ownerAccount: user.email })) {
+                                props.openModal(false);
+                            }
+
+
+
+
                         }
                         else {
                             setAddPrimaryEmailError("An error occured when registering this email.")
@@ -352,11 +355,10 @@ function AddNewEmail(props) {
 
                             const registered2 = await registeremail(requestData2)
                             if (registered2) {
-                                let rehydrated = getuseroutboundemails()
-                                refreshUserOutbounds({ ownerAccount: user.email })
-                                refreshUserTasks({ ownerAccount: user.email })
-                                refreshUserEmails({ ownerAccount: user.email })
-                                props.openModal(false);
+                                if (refreshUserOutbounds({ ownerAccount: user.email }) && refreshUserTasks({ ownerAccount: user.email }) && refreshUserEmails({ ownerAccount: user.email })) {
+                                    props.openModal(false);
+                                }
+
                             }
 
                         }
@@ -418,8 +420,10 @@ function AddNewEmail(props) {
 
                                         const registered2 = await registeremail(requestData2)
                                         if (registered2) {
-                                            let rehydrated = getuseroutboundemails()
-                                            props.openModal(false);
+                                            if (refreshUserOutbounds({ ownerAccount: user.email }) && refreshUserTasks({ ownerAccount: user.email }) && refreshUserEmails({ ownerAccount: user.email })) {
+                                                props.openModal(false);
+                                            }
+
                                         }
 
                                     }

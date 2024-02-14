@@ -61,15 +61,14 @@ function DeleteOutbound(props) {
 
                                         if (result.message === "outbond-deleted") {
                                             //Get Outbonds
-                                            refreshUserOutbounds({ ownerAccount: user.email })
-                                            refreshUserTasks({ ownerAccount: user.email })
-                                            refreshUserEmails({ ownerAccount: user.email })
-                                            setSuccessMessage("Outbound deleted")
-                                            setLoading(false)
-
-                                            props.openModal(false)
 
 
+
+                                            if (refreshUserOutbounds({ ownerAccount: user.email }) && refreshUserTasks({ ownerAccount: user.email }) && refreshUserEmails({ ownerAccount: user.email })) {
+                                                setSuccessMessage("Outbound deleted")
+                                                setLoading(false)
+                                                props.openModal(false)
+                                            }
                                             // const newrequestData = {
                                             //     ownerAccount: user.email
                                             // }
@@ -134,14 +133,15 @@ function DeleteOutbound(props) {
                                     .then((result) => {
 
                                         if (result.message === "email-deleted") {
-                                            refreshUserOutbounds({ ownerAccount: user.email })
-                                            refreshUserTasks({ ownerAccount: user.email })
-                                            refreshUserEmails({ ownerAccount: user.email })
-                                            setSuccessMessage("Email deleted")
-                                            setLoading(false)
 
-                                            props.openModal(false)
 
+
+                                            if (refreshUserOutbounds({ ownerAccount: user.email }) && refreshUserTasks({ ownerAccount: user.email }) && refreshUserEmails({ ownerAccount: user.email })) {
+                                                setSuccessMessage("Email deleted")
+                                                setLoading(false)
+
+                                                props.openModal(false)
+                                            }
 
 
 

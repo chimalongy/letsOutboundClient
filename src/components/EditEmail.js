@@ -49,10 +49,9 @@ function EditEmail(props) {
             dataFetch(url, requestData)
                 .then((result => {
                     if (result.message == "email-updated") {
-                        refreshUserOutbounds({ ownerAccount: user.email })
-                        refreshUserEmails({ ownerAccount: user.email })
-                        refreshUserTasks({ ownerAccount: user.email })
-                        props.openModal(false)
+                        if (refreshUserOutbounds({ ownerAccount: user.email }) && refreshUserTasks({ ownerAccount: user.email }) && refreshUserEmails({ ownerAccount: user.email })) {
+                            props.openModal(false)
+                        }
                     }
                     else {
                         setLoadingEdit(false)

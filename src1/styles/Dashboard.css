@@ -1,0 +1,126 @@
+.dashboard-tab {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 0;
+}
+
+.dashboard-left {
+    width: 20%;
+    padding: 10px;
+    background-color: var(--color1);
+}
+
+.dashboard-title>h1 {
+    font-size: 30px;
+}
+
+.side-bar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 35px;
+    width: 100%;
+    color: white;
+
+}
+
+.side-bar-menu>li {
+    padding: 20px;
+}
+
+.side-bar-menu>li:hover {
+    background-color: var(--thinLine);
+    color: var(--color1);
+    border-radius: 10px;
+}
+
+
+
+
+
+
+.dashboard-right {
+    width: 80%;
+
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dashboard-controls {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    gap: 1rem;
+
+}
+
+.theme-selector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* DASH BOARD TAB STYLES */
+
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.side-bar-handbuger {
+    display: none;
+    color: var(--thinLine);
+}
+
+.logout-button {
+    margin-top: 10rem;
+}
+
+@media screen and (max-width:750px) {
+    .dashboard-tab {
+        flex-direction: column;
+
+    }
+
+    .dashboard-left {
+        width: 100%;
+    }
+
+    .dashboard-right {
+        width: 100%;
+
+
+    }
+
+    .side-bar-handbuger {
+        display: inline-block;
+        font-size: 25px;
+    }
+
+    .side-bar-menu {
+        display: none;
+    }
+
+    .side-bar-menu-mobile {
+        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        font-size: 25px;
+        width: 100%;
+        color: white;
+    }
+
+
+    .side-bar-menu-hidden {
+        display: none;
+    }
+
+    .logout-button {
+        margin-top: 5rem;
+    }
+}

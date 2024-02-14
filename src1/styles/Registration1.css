@@ -1,0 +1,31 @@
+
+.Registration{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+.verify-email-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:10px;
+    padding-top: 10px;
+}
+.verify-email-form>div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+}
+.verify-email-form>button{
+    padding: 20px;
+    background-color: var(--color2);
+    color: white;
+    border: none;
+    border-radius: 50px;
+}

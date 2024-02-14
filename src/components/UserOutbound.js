@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Modal from './Modal';
 import AddOutbound from './AddOutbound.js';
 import "../styles/UserOutbound.css"
 import dataFetch from '../modules/dataFetch';
 import { useDispatch, useSelector } from 'react-redux';
+import useDataUpdater from '../modules/useDataUpdater';
 
 
 import Paginate from './Paginate';
@@ -14,7 +15,9 @@ import RemoveEmails from './RemoveEmails';
 import SendSingle from './SendSingle.js';
 
 
+
 function UserOutbound() {
+
   const [showModal, setShowModal] = useState(false);
   const [modalChildren, setModalChildren] = useState(null);
 
@@ -22,13 +25,50 @@ function UserOutbound() {
   const uOutbounds = useSelector((state) => state.userOutbounds.userOutbounds.outbounds);
   const uTasks = useSelector((state) => state.userTasks.userTasks.task);
 
+  useEffect(() => {
+    setCurrentList(uOutbounds.slice(indexOfFirstItem, indexOfLastItem))
+  }, [uOutbounds])
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage, setItemsPerPage] = useState(10)
-  const indexOfLastItem = currentPage * itemsPerPage
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  let currentlist = uOutbounds.slice(indexOfFirstItem, indexOfLastItem)
-  const paginate = (pageNumber) => { setCurrentPage(pageNumber) }
+
+
+  // ==================================================
+  let currentPage = 1
+  const itemsPerPage = 10;
+  let indexOfLastItem = currentPage * itemsPerPage
+  let indexOfFirstItem = indexOfLastItem - itemsPerPage
+  let [currentlist, setCurrentList] = useState(uOutbounds.slice(indexOfFirstItem, indexOfLastItem))
+  const paginate = (pageNumber) => {
+    currentPage = pageNumber
+    indexOfLastItem = currentPage * itemsPerPage
+    indexOfFirstItem = indexOfLastItem - itemsPerPage
+    setCurrentList(uOutbounds.slice(indexOfFirstItem, indexOfLastItem))
+
+  }
+  const [searchquery, setsearchquery] = useState("")
+  const [searching, setsearching] = useState(false)
+  function searchOutbounds() {
+
+    let result = uOutbounds.filter(outbound => { return outbound.outboundName.toLocaleLowerCase().includes(searchquery.toLocaleLowerCase()) })
+    // console.log(result)
+    setCurrentList(result)
+  }
+
+  function searchqueryChange(e) {
+    setsearchquery(e.target.value)
+    setsearching(true)
+    searchOutbounds()
+
+    if ((e.target.value == null) || (e.target.value = "")) {
+      stopsearch()
+
+    }
+  }
+
+  function stopsearch() {
+    setCurrentList(uOutbounds.slice(indexOfFirstItem, indexOfLastItem))
+    setsearching(false)
+    setsearchquery("")
+  }
 
   function ItemList(props) {
     return (
@@ -65,9 +105,13 @@ function UserOutbound() {
                   <i className="fa-solid fa-clipboard-list item-icon list" title='task list' onClick={
                     () => {
 
+
                       let outboundTasks = uTasks.filter(task => task.outboundName === outbound.outboundName)
                       setModalChildren(<ShowTasks data={outboundTasks} openModal={setShowModal} />)
                       setShowModal(true);
+
+
+
                     }
                   }></i>
                   <i className="fa-solid fa-trash item-icon delete" title='delete' onClick={
@@ -144,11 +188,26 @@ function UserOutbound() {
         </div>
 
         <div className='email-table'>
+          <div className='search-container'>
+            <input
+              className='searchinput'
+              type='text'
+              value={searchquery}
+              placeholder='...search'
+              onChange={searchqueryChange}
+            />
+            {searching ? (<i class="fa-solid fa-circle-xmark search-button" onClick={stopsearch}></i>) : (<i class="fa-solid fa-magnifying-glass search-button" onClick={() => {
+              setsearching(true)
+              searchOutbounds()
+            }}></i>)}
+          </div>
 
           <ItemList data={currentlist} />
 
         </div>
-        <Paginate itemsPerPage={itemsPerPage} totalItemsCount={uOutbounds.length} paginate={paginate} />
+
+
+        {searching ? (<></>) : (<Paginate itemsPerPage={itemsPerPage} totalItemsCount={uOutbounds.length} paginate={paginate} />)}
       </div>
       {showModal ? (<Modal header="Add Account" children={modalChildren} show={setShowModal}></Modal>) : (<></>)}
     </div>

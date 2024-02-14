@@ -127,12 +127,15 @@ export default function Task(props) {
     const [sendingDay, setSendingDay] = useState()
     const [sendingTime, setSendingTime] = useState()
     const [selectedDate, setSelectedDate] = useState('');
-    const [sendingRate, setSendingRate] = useState(0)
+    const [sendingRate, setSendingRate] = useState(5)
     const [disabledDates, setDisabledDates] = useState(["2023-10-18T00:00", "2023-10-27T00:00", "2023-10-25T00:00"]); // Replace with your actual disabled dates
     // const disabledDates = ["2023-10-20T12:00", "2023-10-25T15:30", "2023-11-05T10:00"];
 
     const maxDate = new Date(Math.max(...disabledDates.map(date => new Date(date))))
     const formattedMaxDate = maxDate.toISOString().slice(0, 16);
+
+    const [isFollowUp, setIsFollowUp] = useState(false)
+
 
     const handleDateChange = (e) => {
         const newSelectedDate = e.target.value;
@@ -215,7 +218,8 @@ export default function Task(props) {
                 taskGreeting: taskgreeting,
                 taskBody: taskbody,
                 taskBodyType: selectedOption == "text" ? "text" : "html",
-                timeZone: userTimeZone
+                timeZone: userTimeZone,
+                taskType: isFollowUp ? "followup" : "newoutbound"
             }
 
             let url = port + '/registertask'
@@ -249,10 +253,9 @@ export default function Task(props) {
                 }
 
 
-                refreshUserOutbounds({ ownerAccount: user.email })
-                refreshUserEmails({ ownerAccount: user.email })
-                refreshUserTasks({ ownerAccount: user.email })
-                props.openModal(false);
+                if (refreshUserOutbounds({ ownerAccount: user.email }) && refreshUserTasks({ ownerAccount: user.email }) && refreshUserEmails({ ownerAccount: user.email })) {
+                    props.openModal(false)
+                }
             }
             else {
                 setTaskContentError("An error occured. Check internet connection")
@@ -292,7 +295,32 @@ export default function Task(props) {
 
     };
 
+    function handleFollowUpChecked() {
+        setIsFollowUp(!isFollowUp);
+        if (!isFollowUp) {
+            let previousTaskName = (`${props.data.outboundName}>task>${props.data.tasks}`)
 
+            const previousTask = uTasks.filter(task => task.taskName == previousTaskName)
+
+            let previousSubject = previousTask.taskSubject
+            if (previousTask.length >= 1) {
+                previousSubject = previousTask[0].taskSubject;
+            }
+
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                subject: previousSubject,
+            }));
+
+
+        }
+        else {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                subject: "",
+            }));
+        }
+    }
 
     return (
         <div className='form-holder task'>
@@ -324,6 +352,7 @@ export default function Task(props) {
                         <input
                             type="number"
                             value={sendingRate}
+                            min={5}
                             onChange={(e) => { setSendingRate(e.target.value) }}
                         />
                         <button className='site-button-thin' onClick={() => {
@@ -331,8 +360,8 @@ export default function Task(props) {
                             if (selectedDate == "") {
                                 setDatSelectionError("Please choose a date")
                             }
-                            else if (sendingRate == "" || sendingRate == null || sendingRate <= 0) {
-                                setSendingRateError("sending rate cannot be less than orr equal to 0")
+                            else if (sendingRate == "" || sendingRate == null || sendingRate < 5) {
+                                setSendingRateError("sending rate cannot be less than or equal to 5 seconds")
                             }
 
                             else {
@@ -444,8 +473,8 @@ export default function Task(props) {
 
 
                                 }
-                                else if (sendingRate <= 0) {
-                                    setDatSelectionError("Sending speed should be greater than 0")
+                                else if (sendingRate <= 3) {
+                                    setDatSelectionError("Sending speed should be greater than 3")
                                 }
                                 else {
                                     setSendingDay(date_str)
@@ -464,7 +493,7 @@ export default function Task(props) {
                         <div>
                             {taskContentError && <div className='form-error-container'><p className='error'><i class="fa-solid fa-circle-exclamation"></i> {taskContentError}</p></div>}
                             <form onSubmit={handleSubmit}>
-                                <div>
+                                <div className='email-subject-container'>
 
                                     <input
                                         placeholder='email subject'
@@ -474,6 +503,19 @@ export default function Task(props) {
                                         value={formData.subject}
                                         onChange={handleInputChange}
                                     />
+
+                                    {props.data.tasks == 0 ? ("") : (
+                                        <label className='choice-lable'>
+                                            <input
+                                                type="checkbox"
+                                                checked={isFollowUp}
+                                                onChange={handleFollowUpChecked}
+                                            />
+                                            <p>Follow Up</p>
+                                        </label>
+
+                                    )}
+                                    {/* <p>Checkbox is {isFollowUp ? 'checked' : 'unchecked'}</p> */}
 
                                 </div>
 

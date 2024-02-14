@@ -1,34 +1,33 @@
-.task{
-    display: flex;
-    flex-direction: column;
-    gap:5px;
+.task {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.date-select{
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 10px;
+.date-select {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 10px;
 }
+
 .my-rich-text-editor {
-    width: 100%;
-  }
+  width: 100%;
+}
 
-  .bodyOptionContainer{
-    display: flex;
-    flex-direction: column;
-    gap:10px
-  }
+.bodyOptionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px
+}
 
-  .chooseTextType{
-    display: flex;
-    gap: 30px;
-  }
+.chooseTextType {
+  display: flex;
+  gap: 30px;
+}
 
-  .chooseTextType>div>label{
-    display: flex;
-    gap:10px;
-  }
+.chooseTextType>div>label {
+  display: flex;
+  gap: 10px;
+}
 
-
- 

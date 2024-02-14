@@ -53,10 +53,9 @@ function RemoveEmails(props) {
                         const result = await dataFetch(url, requestData)
                         if (result.message == "deleted") {
                             //PERFORM TASK HERE
-                            refreshUserOutbounds({ ownerAccount: user.email })
-                            refreshUserTasks({ ownerAccount: user.email })
-                            refreshUserEmails({ ownerAccount: user.email })
-                            props.openModal(false)
+                            if (refreshUserOutbounds({ ownerAccount: user.email }) && refreshUserTasks({ ownerAccount: user.email }) && refreshUserEmails({ ownerAccount: user.email })) {
+                                props.openModal(false)
+                            }
                         }
                         else {
                             setLoadingDelete(false)

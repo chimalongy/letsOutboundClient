@@ -182,6 +182,7 @@ function AddOutbound(props) {
                     sendingFrom: selectedEmail.primaryEmail ? selectedEmail.emailAddress : selectedEmail.parentEmail,
                     emailAllocations: newAllocation,
                     nameAllocations: nameAllocation,
+                    threadIDs: []
                 }
                 setOutboundAllocation([...outboundAllocation, allocation])
 
@@ -230,6 +231,7 @@ function AddOutbound(props) {
                         sendingFrom: selectedEmail.primaryEmail ? selectedEmail.emailAddress : selectedEmail.parentEmail,
                         emailAllocations: newAllocation,
                         nameAllocations: nameAllocation,
+                        threadIDs: []
                     }
                     setOutboundAllocation([...outboundAllocation, allocation])
 
@@ -318,10 +320,9 @@ function AddOutbound(props) {
                     if (result.message === "registrationComplete") {
                         // alert("Outbound Registered")
                         //GETTING OUTBOUND DATA
-                        refreshUserOutbounds({ ownerAccount: user.email })
-                        refreshUserTasks({ ownerAccount: user.email })
-                        refreshUserEmails({ ownerAccount: user.email })
-                        props.openModal(false);
+                        if (refreshUserOutbounds({ ownerAccount: user.email }) && refreshUserTasks({ ownerAccount: user.email }) && refreshUserEmails({ ownerAccount: user.email })) {
+                            props.openModal(false);
+                        }
 
                         // const newrequestData = { ownerAccount: user.email }
                         // let url = port + '/getuseroutbounds'

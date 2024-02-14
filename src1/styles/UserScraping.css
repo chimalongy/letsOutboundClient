@@ -1,0 +1,60 @@
+.gridList {
+    border: 1px solid var(--thinLine);
+}
+
+.gridList>ul {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+
+}
+
+.gridList>ul>li {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% / 4);
+    border: 1px solid var(--thinLine);
+    border-radius: 8px;
+    padding: 10px;
+    gap: 8px;
+}
+
+.image-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.image-div>img {
+    width: 70px;
+    height: 75px;
+
+}
+
+.scrape-name {
+    text-align: center;
+    font-weight: bold;
+}
+
+.scrape-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.scrape-controls>button {
+    color: white;
+}
+
+@media screen and (max-width:750px) {
+    .gridList>ul>li {
+        width: calc(100% / 2)
+    }
+
+    .image-div>img {
+        width: 55px;
+        height: 50px;
+
+    }
+
+}

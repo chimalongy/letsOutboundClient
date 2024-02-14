@@ -1,0 +1,56 @@
+.logo {
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-circle {
+    padding: 15px;
+    border: 4px solid white;
+    border-radius: 100%;
+    color: white;
+    margin: 10px;
+}
+
+.logo-icon {
+    font-size: 30px;
+}
+
+.logo-text,
+.logo-text>span {
+    font-size: 25px;
+}
+
+.logo-text {
+    color: white;
+}
+
+.logo-text>span {
+    color: orangered
+}
+
+@media screen and (max-width:750px) {
+    .logo {
+        font-size: 13px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .logo-circle {
+        padding: 10px;
+        border: 4px solid white;
+        border-radius: 100%;
+        color: white;
+    }
+
+    .logo-icon {
+        font-size: 20px;
+    }
+
+    .logo-text,
+    .logo-text>span {
+        font-size: 20px;
+    }
+}

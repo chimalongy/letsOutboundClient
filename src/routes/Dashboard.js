@@ -32,7 +32,8 @@ function Dashboard() {
         UDashboard.current.classList.remove("active")
         UEmails.current.classList.remove("active")
         UOutbound.current.classList.remove("active")
-        UScraping.current.classList.remove("active")
+        //uList.current.classList.remove("active")
+        //UScraping.current.classList.remove("active")
         // UTransactions.current.classList.remove("active")
         // USettings.current.classList.remove("active")
     }
@@ -41,7 +42,9 @@ function Dashboard() {
     const UEmails = useRef();
     const UOutbound = useRef();
     const UScraping = useRef();
+    const uList = useRef()
     const sidebarmenu = useRef();
+
     // const UTransactions = useRef();
     // const USettings = useRef();
 
@@ -109,7 +112,18 @@ function Dashboard() {
                         <p> <i class="fa-regular fa-paper-plane"></i> Outbounds</p>
 
                     </li>
-                    <li ref={UScraping} onClick={() => {
+                    {/* <li ref={uList} onClick={() => {
+                        setTabContent(<UserOutbound />)
+                        setTabTittle("Lists")
+                        setTabDescription("Create, save and work with lists")
+                        removeActive();
+                        uList.current.classList.add("active")
+                        closeSideBarMenu()
+                    }}>
+                        <p> <i class="fa-solid fa-list-ol"></i> Lists</p>
+
+                    </li> */}
+                    {/* <li ref={UScraping} onClick={() => {
                         setTabContent(<UserScraping />)
                         setTabTittle("Scrapings")
                         setTabDescription("Scrap Emails from links")
@@ -119,7 +133,7 @@ function Dashboard() {
                     }}>
                         <p> <i class="fa-regular fa-paper-plane"></i> Scraping</p>
 
-                    </li>
+                    </li> */}
 
 
 

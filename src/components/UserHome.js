@@ -1,8 +1,10 @@
 import React, { PureComponent, useEffect, useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+// import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
 import Calendar from "../components/Calendar"
 import "../styles/UserHome.css"
 import { useDispatch, useSelector } from 'react-redux';
+import MyAreaChart from './MyAreaChart';
 
 function UserHome() {
 
@@ -37,9 +39,9 @@ function UserHome() {
     let completedTasks = uTasks.filter(task => task.status == "completed")
     let scheduledTasks = uTasks.filter(task => task.status != "completed")
 
+
     useEffect(() => {
         let TCapacity = 0;
-
 
 
 
@@ -94,11 +96,13 @@ function UserHome() {
             }
         }
 
-        return graphData
+        return graphData;
+
     }
 
 
-
+    let graphData = getGraphData()
+    console.log(graphData)
 
     return (
         <div className='user-home'>
@@ -182,7 +186,7 @@ function UserHome() {
             </div>
             <div className='sending-graph'>
                 <h1>This week:</h1>
-                <ResponsiveContainer width="100%" height={300}>
+                {/* <ResponsiveContainer width="100%" height={300}>
                     <LineChart data={getGraphData()}>
 
                         <CartesianGrid strokeDasharray="3 3" />
@@ -193,7 +197,11 @@ function UserHome() {
                         <Line type="monotone" dataKey="sent" stroke="#8884d8" activeDot={{ r: 8 }} />
 
                     </LineChart>
-                </ResponsiveContainer>
+                </ResponsiveContainer> */}
+
+
+                <MyAreaChart graphData={graphData} />
+
             </div>
             {/* <div>
                
