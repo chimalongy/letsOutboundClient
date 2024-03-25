@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import useDataUpdater from '../modules/useDataUpdater';
 
 
+
+
 import Paginate from './Paginate';
 import Task from './Task';
 import ShowTasks from './ShowTasks';
@@ -17,11 +19,12 @@ import SendSingle from './SendSingle.js';
 
 
 function UserOutbound() {
-
+  const port = ""
   const [showModal, setShowModal] = useState(false);
   const [modalChildren, setModalChildren] = useState(null);
 
   const user = useSelector((state) => state.user.userData);
+  const uEmails = useSelector((state) => state.userEmails.userEmails.emails);
   const uOutbounds = useSelector((state) => state.userOutbounds.userOutbounds.outbounds);
   const uTasks = useSelector((state) => state.userTasks.userTasks.task);
 
@@ -70,6 +73,57 @@ function UserOutbound() {
     setsearchquery("")
   }
 
+
+  function getPreviousSubject(OutboundName) {
+    let taskList = uTasks.filter(task => task.outboundName == OutboundName)
+
+    let previousTask = taskList[taskList.length - 1]
+
+    return previousTask.taskSubject
+  }
+
+  function getuseroutboundemails(outbound) {// NOT USED
+    const result = []
+
+    console.log('THE OUTBOUND IS ', outbound)
+    // console.log('UEMAILS', uEmails)
+    let i = 0
+
+
+    for (const item of outbound.emailList) {
+      if (item.allocatedEmail == item.sendingFrom) {
+
+        const Email = uEmails.filter((email) => { return email.emailAddress = item.allocatedEmail })
+        const previousSubject = getPreviousSubject(outbound.outboundName)
+        result.push(
+          {
+            emailAddress: Email[0].emailAddress,
+            password: Email[0].password,
+            outboundName: outbound.outboundName,
+            previousSubject: previousSubject
+          }
+        )
+      }
+      else {
+        const Email = uEmails.filter((email) => { return (email.emailAddress = item.allocatedEmail) && (email.parentEmail = item.sendingFrom) })
+        const previousSubject = getPreviousSubject(outbound.outboundName)
+        result.push(
+          {
+            emailAddress: Email[0].parentEmail,
+            password: Email[0].password,
+            outboundName: outbound.outboundName,
+            previousSubject: previousSubject
+          }
+        )
+      }
+    }
+
+
+
+    return result
+  }
+
+
   function ItemList(props) {
     return (
       <div className='itemList'>
@@ -109,17 +163,27 @@ function UserOutbound() {
                       let outboundTasks = uTasks.filter(task => task.outboundName === outbound.outboundName)
                       setModalChildren(<ShowTasks data={outboundTasks} openModal={setShowModal} />)
                       setShowModal(true);
-
-
-
                     }
                   }></i>
+
                   <i className="fa-solid fa-trash item-icon delete" title='delete' onClick={
                     () => {
                       setModalChildren(<DeleteOutbound data={outbound} openModal={setShowModal} value="outbound" />)
                       setShowModal(true);
                     }
                   } ></i>
+
+
+                  {/* <i className="fa-solid fa-comments" title='replies' onClick={
+                    async () => {
+                      const url = port + "/getReplies"
+
+                      let request = {
+
+                      }
+                      const response = await dataFetch(url, request)
+                    }
+                  } ></i> */}
                 </div>
                 <details className='outbound-details'>
                   <summary className='outbound-detail-summary'>See more </summary>
